@@ -50,23 +50,23 @@ public class GameController extends Controller {
 
     public Result allGames() {
 
-        ArrayNode allGames = mapper.createArrayNode();
+            ArrayNode allGames = mapper.createArrayNode();
 
-        ObjectNode json1 = mapper.createObjectNode();
-        json1.put("name", "Game 1");
-        json1.put("host", "EA Origin lol");
+            ObjectNode json1 = mapper.createObjectNode();
+            json1.put("name", "Game 1");
+            json1.put("host", "EA Origin lol");
 
-        ObjectNode json2 = mapper.createObjectNode();
-        json2.put("name", "Game 2");
-        json2.put("host", "An ancient abandoned server in Rick's backyard covered with actual specks of shit (still better than origin)");
+            ObjectNode json2 = mapper.createObjectNode();
+            json2.put("name", "Game 2");
+            json2.put("host", "An ancient abandoned server in Rick's backyard covered with actual specks of shit (still better than origin)");
 
-        allGames.add(json1);
-        allGames.add(json2);
+            allGames.add(json1);
+            allGames.add(json2);
 
-        return ok(allGames.toString());
-    }
+            return ok(allGames.toString());
+        }
 
-    public WebSocket game() {
-        return WebSocket.Text.accept(request -> ActorFlow.actorRef(GameWebSocketActor::props, actorSystem, mat));
+        public WebSocket game() {
+            return WebSocket.Text.accept(request -> ActorFlow.actorRef(GameWebSocketActor::props, actorSystem, mat));
     }
 }

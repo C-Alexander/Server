@@ -3,8 +3,7 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                           controllers.HomeController.index
-GET     /chat                       controllers.HomeController.chat
+
 
 
 GET    /games                      controllers.GameController.allGames
