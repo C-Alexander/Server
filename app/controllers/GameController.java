@@ -41,7 +41,7 @@ public class GameController extends Controller {
         mapper = new ObjectMapper();
     }
 
-    public static Result index() {
+    public Result index() {
         return ok("lol teun");
     }
 
