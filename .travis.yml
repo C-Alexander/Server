@@ -6,6 +6,7 @@ deploy:
   - provider: boxfuse
     user: $user
     secret: $secret
+    env: $env
 # Use container-based infrastructure
 sudo: false
 before_cache:
