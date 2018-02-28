@@ -6,7 +6,15 @@ deploy:
   - provider: boxfuse
     user: $user
     secret: $secret
-    env: $env
+    env: prod
+    on:
+      branch: master
+  - provider: boxfuse
+    user: $user
+    secret: $secret
+    env: test
+    on:
+      branch: develop
 # Use container-based infrastructure
 sudo: false
 before_cache:
