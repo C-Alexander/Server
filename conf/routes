@@ -5,7 +5,7 @@
 # An example controller showing a sample home page
 
 
-
+GET    /                      controllers.GameController.index
 GET    /games                      controllers.GameController.allGames
 POST   /games                      controllers.GameController.newGame
 GET     /game                      controllers.GameController.game

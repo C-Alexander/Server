@@ -41,6 +41,10 @@ public class GameController extends Controller {
         mapper = new ObjectMapper();
     }
 
+    public static Result index() {
+        return ok("lol teun");
+    }
+
     public Result newGame() {
         JsonNode body = request().body().asJson();
         Logger.info(body.toString());
