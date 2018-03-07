@@ -42,7 +42,7 @@ public class GameController extends Controller {
     }
 
     public Result index() {
-        return ok("lol teun");
+        return ok("lol teun, rick is gay");
     }
 
     public Result newGame() {
