@@ -1,29 +1,21 @@
 package controllers;
 
 
-import actors.GameWebSocketActor;
-import akka.NotUsed;
+import actors.GameManagerActor;
+import actors.WebSocketActor;
 import akka.actor.ActorSystem;
-import akka.event.Logging;
-import akka.event.LoggingAdapter;
-import akka.japi.Pair;
-import akka.japi.pf.PFBuilder;
 import akka.stream.Materializer;
-import akka.stream.javadsl.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.inject.Singleton;
-import org.webjars.play.WebJarsUtil;
+import msgs.Packet;
 import play.Logger;
-import play.libs.F;
 import play.libs.streams.ActorFlow;
 import play.mvc.Controller;
 import play.mvc.*;
 
 import javax.inject.Inject;
-import java.util.concurrent.CompletableFuture;
 
 public class GameController extends Controller {
 
@@ -37,6 +29,7 @@ public class GameController extends Controller {
         super();
         this.actorSystem = actorSystem;
         this.mat = mat;
+        actorSystem.actorOf(GameManagerActor.props(), "GameManager");
 
         mapper = new ObjectMapper();
     }
@@ -71,6 +64,6 @@ public class GameController extends Controller {
         }
 
         public WebSocket game() {
-            return WebSocket.Text.accept(request -> ActorFlow.actorRef(GameWebSocketActor::props, actorSystem, mat));
+            return WebSocket.json(Packet.class).accept(request -> ActorFlow.actorRef(WebSocketActor::props, actorSystem, mat));
     }
 }
