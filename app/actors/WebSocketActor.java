@@ -26,8 +26,6 @@ public class WebSocketActor extends AbstractActor {
 
     @Override
     public Receive createReceive() {
-        Logger.info(getSelf().path().toString());
-
         return receiveBuilder()
                 .match(Packet.class, this::handlePacket)
                 .match(PlayerAddedToGameMessage.class, this::handleGameJoined)
