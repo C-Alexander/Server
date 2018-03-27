@@ -1,5 +1,10 @@
 language: scala
 jdk: oraclejdk8
+# safelist
+branches:
+  only:
+  - master
+  - develop
 script: 
   - sbt dist
 deploy:
