@@ -6,6 +6,9 @@ branches:
   - master
   - develop
 script:
+  - mkdir dist
+  - mkdir dist/conf
+  - mv conf/application.conf dist/conf/application.conf
   - sbt dist
 deploy:
   - provider: boxfuse
