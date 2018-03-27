@@ -20,7 +20,7 @@ deploy:
     envvars.DB_USERNAME = $DB_USERNAME
     envvars.DB_PASSWORD = $DB_PASSWORD
     envvars.DB_DRIVER = $DB_DRIVER
-    envvars.DB_URL = $DB_URL_DEV
+    envvars.DB_URL = $DB_URL_DEV,
     envvars.REST_PORT = $REST_PORT
     on:
       branch: develop
