@@ -4,11 +4,9 @@ version := "0.1.0"
 
 scalaVersion := "2.12.4"
 
-PlayKeys.externalizeResources := false
-
 crossScalaVersions := Seq("2.11.12", "2.12.4")
 resolvers += Resolver.sbtPluginRepo("releases")
-lazy val root = (project in file(".")).enablePlugins(PlayJava)
+lazy val root = (project in file(".")).enablePlugins(PlayJava, LauncherJarPlugin)
 
 libraryDependencies += javaJpa
 libraryDependencies += "org.hibernate" % "hibernate-entitymanager" % "5.1.0.Final"
@@ -27,3 +25,7 @@ libraryDependencies += "org.awaitility" % "awaitility" % "3.0.0" % Test
 
 // Needed to make JUnit report the tests being run
 testOptions in Test := Seq(Tests.Argument(TestFrameworks.JUnit, "-a", "-v"))
+
+sources in(Compile, doc) := Seq.empty
+
+publishArtifact in(Compile, packageDoc) := false
