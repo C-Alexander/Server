@@ -12,16 +12,16 @@ deploy:
     user: $user
     secret: $secret
     env: prod
-    extra_args: "-envvars.DB_USERNAME=$DB_USERNAME -envvars.DB_PASSWORD=$DB_PASSWORD -envvars.DB_DRIVER=$DB_DRIVER -envvars.REST_PORT=$REST_PORT -envvars.DB_URL=$DB_URL"
-    image: "genserver:$TRAVIS_BUILD_NUMBER"
+    extra_args: "-envvars.DB_USERNAME="$DB_USERNAME" -envvars.DB_PASSWORD="$DB_PASSWORD" -envvars.DB_DRIVER="$DB_DRIVER" -envvars.REST_PORT="$REST_PORT" -envvars.DB_URL="$DB_URL
+    image: "genserver:"$TRAVIS_BUILD_NUMBER
     on:
       branch: master
   - provider: boxfuse
     user: $user
     secret: $secret
     env: test
-    extra_args: "-envvars.DB_USERNAME=$DB_USERNAME -envvars.DB_PASSWORD=$DB_PASSWORD -envvars.DB_DRIVER=$DB_DRIVER -envvars.REST_PORT=$REST_PORT -envvars.DB_URL=$DB_URL_DEV"
-    image: "genserver:$TRAVIS_BUILD_NUMBER"
+    extra_args: "-envvars.DB_USERNAME="$DB_USERNAME" -envvars.DB_PASSWORD="$DB_PASSWORD" -envvars.DB_DRIVER="$DB_DRIVER" -envvars.REST_PORT="$REST_PORT" -envvars.DB_URL="$DB_URL_DEV
+    image: "genserver:"$TRAVIS_BUILD_NUMBER
     on:
       branch: develop
 # Use container-based infrastructure
