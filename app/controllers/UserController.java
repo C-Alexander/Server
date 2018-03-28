@@ -7,6 +7,7 @@ import dal.entities.User;
 import dal.repositories.UserRepository;
 import org.apache.commons.codec.digest.Crypt;
 import org.hibernate.id.GUIDGenerator;
+import play.Logger;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -32,7 +33,7 @@ public class UserController extends Controller {
         JsonNode body = request().body().asJson();
         User user = new User();
         user.setUsername(body.get("username").asText());
-        if(!userRepository.checkIfExists(user.getUsername())){
+        if(!userRepository.IfExists(user.getUsername())){
             user.setPassword(Crypt.crypt(body.get("password").asText(), "LeagueofLegends"));
             userRepository.createUser(user);
             try {
@@ -48,7 +49,7 @@ public class UserController extends Controller {
     }
 
     @Transactional
-    public Result loginUser() {
+    public Result login() {
         JsonNode body = request().body().asJson();
         User user = new User();
         UUID uuid = UUID.randomUUID();

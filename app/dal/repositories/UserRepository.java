@@ -25,7 +25,7 @@ public class UserRepository {
         return context.findAll();
     }
 
-    public Boolean checkIfExists(String username) {
+    public Boolean IfExists(String username) {
         return context.ifExists(username);
     }
 
