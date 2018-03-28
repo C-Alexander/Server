@@ -37,7 +37,7 @@ public class UserController extends Controller {
         User user = new User();
         user.setUsername(body.get("username").asText());
         if(!userRepository.checkIfExists(user.getUsername())){
-            user.setPassword(Crypt.crypt(body.get("password").asText()));
+            user.setPassword(Crypt.crypt(body.get("password").asText(), "LeagueofLegends"));
             userRepository.createUser(user);
             try {
                 return created(mapper.writeValueAsString(user));
@@ -57,7 +57,7 @@ public class UserController extends Controller {
         User user = new User();
         UUID uuid = UUID.randomUUID();
         user.setUsername(body.get("username").asText());
-        user.setPassword(Crypt.crypt(body.get("password").asText()));
+        user.setPassword(Crypt.crypt(body.get("password").asText(), "LeagueofLegends"));
         System.out.println(user.getPassword());
         if(userRepository.login(user)){
                 return ok(uuid.toString());
