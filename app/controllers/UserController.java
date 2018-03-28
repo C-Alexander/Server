@@ -38,7 +38,7 @@ public class UserController extends Controller {
             try {
                 return created(mapper.writeValueAsString(user));
             } catch (JsonProcessingException e) {
-                e.printStackTrace();
+                Logger.error("Unknown message: " + e.getMessage());
                 return internalServerError(e.getMessage());
             }
         }
@@ -54,7 +54,6 @@ public class UserController extends Controller {
         UUID uuid = UUID.randomUUID();
         user.setUsername(body.get("username").asText());
         user.setPassword(Crypt.crypt(body.get("password").asText(), "LeagueofLegends"));
-        System.out.println(user.getPassword());
         if(userRepository.login(user)){
                 return ok(uuid.toString());
             }else{
