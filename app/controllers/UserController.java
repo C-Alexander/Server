@@ -18,17 +18,13 @@ import java.util.UUID;
 
 @Singleton
 public class UserController extends Controller {
-
-
     private final UserRepository userRepository;
     private ObjectMapper mapper;
-
 
     @Inject
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
         mapper = new ObjectMapper();
-
     }
 
     @Transactional
