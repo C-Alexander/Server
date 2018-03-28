@@ -3,11 +3,9 @@ package controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import dal.entities.User;
 import dal.repositories.UserRepository;
 import org.apache.commons.codec.digest.Crypt;
-import play.api.libs.Crypto;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -36,13 +34,18 @@ public class UserController extends Controller {
         JsonNode body = request().body().asJson();
         User user = new User();
         user.setUsername(body.get("username").asText());
-        user.setPassword(Crypt.crypt(body.get("password").asText()));
-        userRepository.createUser(user);
-        try {
-            return created(mapper.writeValueAsString(user));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return internalServerError(e.getMessage());
+        if(!userRepository.checkIfExists(user.getUsername())){
+            user.setPassword(Crypt.crypt(body.get("password").asText()));
+            userRepository.createUser(user);
+            try {
+                return created(mapper.writeValueAsString(user));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+                return internalServerError(e.getMessage());
+            }
+        }
+        else {
+            return status(409, "Username already exists, have you tried logging in?");
         }
     }
 

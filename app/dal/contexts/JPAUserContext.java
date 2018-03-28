@@ -1,9 +1,6 @@
 package dal.contexts;
 
-import com.google.inject.Inject;
-import dal.contexts.UserContext;
 import dal.entities.User;
-import dal.repositories.UserRepository;
 import play.db.jpa.JPAApi;
 
 import javax.persistence.EntityManager;
@@ -32,5 +29,13 @@ public class JPAUserContext implements UserContext {
         return getEntityManager()
                 .createNamedQuery("User.getAll", User.class)
                 .getResultList();
+    }
+
+    @Override
+    public Boolean ifExists(String username) {
+        return getEntityManager()
+                .createNamedQuery("User.ifExists", Boolean.class)
+                .setParameter("username", username)
+                .getSingleResult();
     }
 }

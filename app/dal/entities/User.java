@@ -6,7 +6,8 @@ import javax.persistence.*;
 @Table(name = "Player")
 @NamedQueries({
         @NamedQuery(name = "User.getAll", query = "select u from User as u"),
-        @NamedQuery(name = "User.findOne", query = "select u from User as u WHERE u.id = :id")
+        @NamedQuery(name = "User.findOne", query = "select u from User as u WHERE u.id = :id"),
+        @NamedQuery(name = "User.ifExists", query = "select (COUNT(*) > 0) as exists  from User as u WHERE u.username = :username")
 })
 public class User {
     @Id
