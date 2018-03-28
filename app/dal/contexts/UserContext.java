@@ -10,4 +10,6 @@ public interface UserContext {
     List<User> findAll();
 
     Boolean ifExists(String username);
+
+    Boolean login(User user);
 }

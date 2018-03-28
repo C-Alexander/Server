@@ -6,12 +6,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dal.entities.User;
 import dal.repositories.UserRepository;
 import org.apache.commons.codec.digest.Crypt;
+import org.hibernate.id.GUIDGenerator;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.UUID;
 
 
 @Singleton
@@ -47,6 +49,21 @@ public class UserController extends Controller {
         else {
             return status(409, "Username already exists, have you tried logging in?");
         }
+    }
+
+    @Transactional
+    public Result loginUser() {
+        JsonNode body = request().body().asJson();
+        User user = new User();
+        UUID uuid = UUID.randomUUID();
+        user.setUsername(body.get("username").asText());
+        user.setPassword(Crypt.crypt(body.get("password").asText()));
+        System.out.println(user.getPassword());
+        if(userRepository.login(user)){
+                return ok(uuid.toString());
+            }else{
+                return unauthorized("Username or password incorrect.");
+            }
     }
 
     @Transactional(readOnly = true)

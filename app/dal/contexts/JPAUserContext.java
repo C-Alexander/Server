@@ -38,4 +38,13 @@ public class JPAUserContext implements UserContext {
                 .setParameter("username", username)
                 .getSingleResult();
     }
+
+    @Override
+    public Boolean login(User user) {
+        return getEntityManager()
+                .createNamedQuery("User.login", Boolean.class)
+                .setParameter("username", user.getUsername())
+                .setParameter("password", user.getPassword())
+                .getSingleResult();
+    }
 }

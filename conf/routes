@@ -11,6 +11,7 @@ POST        /games               controllers.GameController.newGame
 GET         /game                controllers.GameController.game
 GET         /users               controllers.UserController.getUsers
 POST        /register            controllers.UserController.createUser
+POST        /login               controllers.UserController.loginUser
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file        controllers.Assets.at(path="/public", file)

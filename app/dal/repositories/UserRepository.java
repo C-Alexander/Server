@@ -28,4 +28,8 @@ public class UserRepository {
     public Boolean checkIfExists(String username) {
         return context.ifExists(username);
     }
+
+    public Boolean login(User user) {
+        return context.login(user);
+    }
 }
