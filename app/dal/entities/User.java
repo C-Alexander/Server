@@ -17,8 +17,8 @@ public class User {
     private String username;
     private String password;
 
-    private List<Character> characters;
-    private List<Character> characterTeam; //consists of 1 hero with maximum 3 generals
+    //private List<Character> characters;
+    //private List<Character> characterTeam; //consists of 1 hero with maximum 3 generals
     private final int maxTeamSize = 4;
 
     public String getUsername() {
@@ -48,30 +48,30 @@ public class User {
     /**
      * @return
      */
-    public List<Character> getCharacters() {
-        List<Character> characters = new ArrayList<Character>();
-        return characters;
-    }
+//    public List<Character> getCharacters() {
+//        List<Character> characters = new ArrayList<Character>();
+//        return characters;
+//    }
 
     /**
      * returns all placeable characters of the characterteam (so including the minions of a general)
      *
      * @return
      */
-    public List<Character> getPlaceableCharacters() {
-        List<Character> result = new ArrayList<Character>();
-
-        for (Character c : characterTeam) {
-            result.add(c);
-            if (c.getRank().equals(RankName.GENERAL)) {
-                for (Character minion : c.getMinions()) {
-                    result.add(minion);
-                }
-            }
-        }
-
-        return result;
-    }
+//    public List<Character> getPlaceableCharacters() {
+//        List<Character> result = new ArrayList<Character>();
+//
+//        for (Character c : characterTeam) {
+//            result.add(c);
+//            if (c.getRank().equals(RankName.GENERAL)) {
+//                for (Character minion : c.getMinions()) {
+//                    result.add(minion);
+//                }
+//            }
+//        }
+//
+//        return result;
+//    }
 
     /**
      * adds character to team if character isn't on team yet and maximum teamsize will not be exceeded
@@ -80,25 +80,25 @@ public class User {
      *
      * @param character
      */
-    public void addCharacterToTeam(Character character) {
-        if (characterTeam.size() < maxTeamSize && !characterTeam.contains(character)) {
-            HashMap<RankName, Integer> rankCount = getCharacterCount(characterTeam);
-            RankName rankName = character.getRank().getRankName();
-
-            switch (rankName) {
-                case HERO:
-                    if (rankCount.get(rankName.HERO) < 1) {
-                        characterTeam.add(character);
-                    }
-                    break;
-                case GENERAL:
-                    characterTeam.add(character);
-                    break;
-                default:
-                    return;
-            }
-        }
-    }
+//    public void addCharacterToTeam(Character character) {
+//        if (characterTeam.size() < maxTeamSize && !characterTeam.contains(character)) {
+//            HashMap<RankName, Integer> rankCount = getCharacterCount(characterTeam);
+//            RankName rankName = character.getRank().getRankName();
+//
+//            switch (rankName) {
+//                case HERO:
+//                    if (rankCount.get(rankName.HERO) < 1) {
+//                        characterTeam.add(character);
+//                    }
+//                    break;
+//                case GENERAL:
+//                    characterTeam.add(character);
+//                    break;
+//                default:
+//                    return;
+//            }
+//        }
+//    }
 
     /**
      * returns HashMap with amount of heroes, generals and minions in list of given characters
@@ -108,41 +108,41 @@ public class User {
      * @param characters
      * @return
      */
-    private HashMap<RankName, Integer> getCharacterCount(List<Character> characters) {
-        HashMap<RankName, Integer> result = new HashMap<RankName, Integer>();
-        int heroCount = 0;
-        int generalCount = 0;
-        int gruntCount = 0;
-
-        for (Character c : characters) {
-            RankName rankName = c.getRank().getRankName();
-            switch (rankName) {
-                case HERO:
-                    heroCount++;
-                    result.put(RankName.HERO, heroCount);
-                    break;
-                case GENERAL:
-                    generalCount++;
-                    result.put(RankName.GENERAL, heroCount);
-                    break;
-                case GRUNT:
-                    gruntCount++;
-                    result.put(RankName.GRUNT, heroCount);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        return result;
-    }
+//    private HashMap<RankName, Integer> getCharacterCount(List<Character> characters) {
+//        HashMap<RankName, Integer> result = new HashMap<RankName, Integer>();
+//        int heroCount = 0;
+//        int generalCount = 0;
+//        int gruntCount = 0;
+//
+//        for (Character c : characters) {
+//            RankName rankName = c.getRank().getRankName();
+//            switch (rankName) {
+//                case HERO:
+//                    heroCount++;
+//                    result.put(RankName.HERO, heroCount);
+//                    break;
+//                case GENERAL:
+//                    generalCount++;
+//                    result.put(RankName.GENERAL, heroCount);
+//                    break;
+//                case GRUNT:
+//                    gruntCount++;
+//                    result.put(RankName.GRUNT, heroCount);
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
+//
+//        return result;
+//    }
 
     /**
      * remove character from team
      *
      * @param character
      */
-    public void removeCharacterFromTeam(Character character) {
-        characterTeam.remove(character);
-    }
+//    public void removeCharacterFromTeam(Character character) {
+//        characterTeam.remove(character);
+//    }
 }

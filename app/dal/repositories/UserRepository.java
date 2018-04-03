@@ -32,4 +32,6 @@ public class UserRepository {
     public Boolean login(User user) {
         return context.login(user);
     }
+
+    public User findOne(int id){return context.findOne(id);}
 }

@@ -47,4 +47,12 @@ public class JPAUserContext implements UserContext {
                 .setParameter("password", user.getPassword())
                 .getSingleResult();
     }
+
+    @Override
+    public User findOne(int id) {
+        return getEntityManager()
+                .createNamedQuery("User.findOne", User.class)
+                .setParameter("id", id)
+                .getSingleResult();
+    }
 }
