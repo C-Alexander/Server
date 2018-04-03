@@ -2,12 +2,9 @@ package dal.repositories;
 
 import dal.contexts.UserContext;
 import dal.entities.User;
-import play.db.jpa.JPAApi;
 
 import javax.inject.*;
-import javax.persistence.*;
 import java.util.List;
-import java.util.concurrent.*;
 
 @Singleton
 public class UserRepository {
@@ -26,5 +23,13 @@ public class UserRepository {
 
     public List<User> getAllUsers() {
         return context.findAll();
+    }
+
+    public Boolean IfExists(String username) {
+        return context.ifExists(username);
+    }
+
+    public Boolean login(User user) {
+        return context.login(user);
     }
 }
