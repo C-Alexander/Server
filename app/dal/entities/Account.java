@@ -1,48 +1,43 @@
-package dal.entities;
+package works.maatwerk.generals.models;
 
-import javax.persistence.*;
+import java.lang.reflect.Array;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
+/**
+ * Created by teund on 21/03/2018.
+ */
 @Entity
-@Table(name = "Player")
+@Table(name = "Account")
 @NamedQueries({
-        @NamedQuery(name = "User.getAll", query = "select u from User as u"),
-        @NamedQuery(name = "User.findOne", query = "select u from User as u WHERE u.id = :id"),
-        @NamedQuery(name = "User.ifExists", query = "select (COUNT(*) > 0) as exists  from User as u WHERE u.username = :username"),
-        @NamedQuery(name = "User.login", query = "select (COUNT(*) > 0) as exists  from User as u WHERE u.username = :username and u.password = :password")
+        @NamedQuery(name = "Account.getAll", query = "select a from Account as a"),
+        @NamedQuery(name = "Account.findOne", query = "select a from Account as a WHERE a.id = :id"),
+        @NamedQuery(name = "Account.ifExists", query = "select (COUNT(*) > 0) as exists  from Account as a WHERE a.username = :username"),
+        @NamedQuery(name = "Account.login", query = "select (COUNT(*) > 0) as exists  from Account as a WHERE a.username = :username and a.password = :password")
 })
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private String username;
-    private String password;
+public class Account {
+    private String Username;
+    private String Password;
 
     private List<Character> characters;
     private List<Character> characterTeam; //consists of 1 hero with maximum 3 generals
     private final int maxTeamSize = 4;
 
-    public String getUsername() {
-        return username;
-    }
 
-    public void setUsername(String name) {
-        this.username = name;
+    public String getUsername() {
+        return Username;
     }
 
     public String getPassword() {
-        return password;
+        return Password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public Account(String username, String password) {
+        Username = username;
+        Password = password;
     }
 
     /**
@@ -144,5 +139,15 @@ public class User {
      */
     public void removeCharacterFromTeam(Character character) {
         characterTeam.remove(character);
+    }
+
+
+
+    @Override
+    public String toString() {
+        return "{" +
+                "\"Username\":\"" + Username + "\"" +
+                ",\"Password\":\"" + Password + "\"" +
+                "}";
     }
 }
