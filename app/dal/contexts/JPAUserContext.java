@@ -1,9 +1,6 @@
 package dal.contexts;
 
-import com.google.inject.Inject;
-import dal.contexts.UserContext;
 import dal.entities.User;
-import dal.repositories.UserRepository;
 import play.db.jpa.JPAApi;
 
 import javax.persistence.EntityManager;
@@ -14,9 +11,7 @@ public class JPAUserContext implements UserContext {
     private final JPAApi jpaApi;
 
     @javax.inject.Inject
-    public JPAUserContext(JPAApi jpaApi) {
-        this.jpaApi = jpaApi;
-    }
+    public JPAUserContext(JPAApi jpaApi) { this.jpaApi = jpaApi; }
 
     protected EntityManager getEntityManager() {
         return this.jpaApi.em();

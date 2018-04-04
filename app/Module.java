@@ -1,6 +1,9 @@
 import com.google.inject.AbstractModule;
+import dal.contexts.JPALobbyContext;
 import dal.contexts.JPAUserContext;
+import dal.contexts.LobbyContext;
 import dal.contexts.UserContext;
+import dal.repositories.LobbyRepository;
 import dal.repositories.UserRepository;
 
 /**
@@ -19,6 +22,8 @@ public class Module extends AbstractModule {
     public void configure() {
         bind(UserRepository.class);
         bind(UserContext.class).to(JPAUserContext.class);
+        bind(LobbyRepository.class);
+        bind(LobbyContext.class).to(JPALobbyContext.class);
     }
 
 }
