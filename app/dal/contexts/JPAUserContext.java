@@ -28,4 +28,21 @@ public class JPAUserContext implements UserContext {
                 .createNamedQuery("User.getAll", User.class)
                 .getResultList();
     }
+
+    @Override
+    public Boolean ifExists(String username) {
+        return getEntityManager()
+                .createNamedQuery("User.ifExists", Boolean.class)
+                .setParameter("username", username)
+                .getSingleResult();
+    }
+
+    @Override
+    public Boolean login(User user) {
+        return getEntityManager()
+                .createNamedQuery("User.login", Boolean.class)
+                .setParameter("username", user.getUsername())
+                .setParameter("password", user.getPassword())
+                .getSingleResult();
+    }
 }
