@@ -19,7 +19,6 @@ import static com.sun.tools.doclint.Entity.and;
  *
  * @author Sam Dirkx
  */
-@Embeddable
 @SuppressWarnings("WeakerAccess")
 @Entity
 @NamedQueries({
@@ -33,7 +32,6 @@ public class Character {
     /**
      * Modifier which specifies the percentage of damage that can be done by a healing weapon (25 means 25% of the attack)
      */
-    private static final int MAX_MINIONS = 3;
     @Embedded
     private Stats baseStats;
     @Embedded
@@ -52,7 +50,6 @@ public class Character {
         this.race = race;
         this.rank = new Rank();
     }
-
 
     public Character(){ }
 
@@ -94,40 +91,7 @@ public class Character {
     public void setWeapon(Weapon weapon) {
         this.weapon = weapon;
     }
-    
-    /**
-     *
-     * @return
-     */
-    public List<Character> getMinions() {
-        return minions;
-    }
-    
-    /**
-     * 
-     * @param minion
-     * @return 
-     */
-    public boolean addMinion(Character minion) {
-        if(rank.getRankName() != RankName.HERO || minion.rank.getRankName() != RankName.GENERAL)
-            throw new IllegalArgumentException();
-        if(minions.size() >= MAX_MINIONS)
-            return false;
-        if(minions.contains(minion))
-            return false;
-        minions.add(minion);
-        return true;
-    }
-    
-    /**
-     * 
-     * @param minion
-     * @return 
-     */
-    public boolean removeMinion(Character minion) {
-       return minions.remove(minion);
-    }
-    
+
     /**
      * Gets the stats of the character for this turn.
      * 
