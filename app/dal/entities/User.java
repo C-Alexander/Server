@@ -16,18 +16,17 @@ public class User {
     private int id;
     private String username;
     private String password;
+    private List<Character> characterTeam;
 
-    //private List<Character> characters;
-    //private List<Character> characterTeam; //consists of 1 hero with maximum 3 generals
-    private final int maxTeamSize = 4;
+    User() {
+        characterTeam = new ArrayList<Character>();
+    }
 
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String name) {
-        this.username = name;
-    }
+    public void setUsername(String name) { this.username = name; }
 
     public String getPassword() {
         return password;
@@ -41,64 +40,43 @@ public class User {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public void setId(int id) { this.id = id; }
 
-    /**
-     * @return
-     */
-//    public List<Character> getCharacters() {
-//        List<Character> characters = new ArrayList<Character>();
-//        return characters;
-//    }
+    public List<Character> getCharacterTeam() { return characterTeam; }
 
-    /**
-     * returns all placeable characters of the characterteam (so including the minions of a general)
-     *
-     * @return
-     */
-//    public List<Character> getPlaceableCharacters() {
-//        List<Character> result = new ArrayList<Character>();
-//
-//        for (Character c : characterTeam) {
-//            result.add(c);
-//            if (c.getRank().equals(RankName.GENERAL)) {
-//                for (Character minion : c.getMinions()) {
-//                    result.add(minion);
-//                }
-//            }
-//        }
-//
-//        return result;
-//    }
+    public void setCharacterTeam(List<Character> characterTeam) { this.characterTeam = characterTeam; }
 
     /**
      * adds character to team if character isn't on team yet and maximum teamsize will not be exceeded
-     * only allowed to have 1 hero, rest must be generals.
-     * adding grunts not allowed, they are stored within a general
+     * for now only allowed to have 1 hero, 1 general and 3 grunts.
      *
      * @param character
      */
-//    public void addCharacterToTeam(Character character) {
-//        if (characterTeam.size() < maxTeamSize && !characterTeam.contains(character)) {
-//            HashMap<RankName, Integer> rankCount = getCharacterCount(characterTeam);
-//            RankName rankName = character.getRank().getRankName();
-//
-//            switch (rankName) {
-//                case HERO:
-//                    if (rankCount.get(rankName.HERO) < 1) {
-//                        characterTeam.add(character);
-//                    }
-//                    break;
-//                case GENERAL:
-//                    characterTeam.add(character);
-//                    break;
-//                default:
-//                    return;
-//            }
-//        }
-//    }
+    public void addCharacterToTeam(Character character) {
+        if (characterTeam.size() < maxTeamSize && !characterTeam.contains(character)) {
+            HashMap<RankName, Integer> rankCount = getCharacterCount(characterTeam);
+
+            RankName rankName = character.getRank().getRankName();
+            switch (rankName) {
+                case HERO:
+                    if (rankCount.get(rankName) < 1) {
+                        characterTeam.add(character);
+                    }
+                    break;
+                case GENERAL:
+                    if (rankCount.get(rankName) < 1) {
+                        characterTeam.add(character);
+                    }
+                    break;
+                case GRUNT:
+                    if (rankCount.get(rankName) < 3) {
+                        characterTeam.add(character);
+                    }
+                default:
+                    return;
+            }
+        }
+    }
 
     /**
      * returns HashMap with amount of heroes, generals and minions in list of given characters
@@ -108,41 +86,38 @@ public class User {
      * @param characters
      * @return
      */
-//    private HashMap<RankName, Integer> getCharacterCount(List<Character> characters) {
-//        HashMap<RankName, Integer> result = new HashMap<RankName, Integer>();
-//        int heroCount = 0;
-//        int generalCount = 0;
-//        int gruntCount = 0;
-//
-//        for (Character c : characters) {
-//            RankName rankName = c.getRank().getRankName();
-//            switch (rankName) {
-//                case HERO:
-//                    heroCount++;
-//                    result.put(RankName.HERO, heroCount);
-//                    break;
-//                case GENERAL:
-//                    generalCount++;
-//                    result.put(RankName.GENERAL, heroCount);
-//                    break;
-//                case GRUNT:
-//                    gruntCount++;
-//                    result.put(RankName.GRUNT, heroCount);
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }
-//
-//        return result;
-//    }
+    private HashMap<RankName, Integer> getCharacterCount(List<Character> characters) {
+        HashMap<RankName, Integer> result = new HashMap<RankName, Integer>();
+        result.put(RankName.HERO, 0);
+        result.put(RankName.GENERAL, 0);
+        result.put(RankName.GRUNT, 0);
+
+        for (Character c : characters) {
+            RankName rankName = c.getRank().getRankName();
+            switch (rankName) {
+                case HERO:
+                    result.put(RankName.HERO, (Integer)result.get(rankName)++);
+                    break;
+                case GENERAL:
+                    result.put(RankName.GENERAL, (Integer)result.get(rankName)++);
+                    break;
+                case GRUNT:
+                    result.put(RankName.GRUNT, (Integer)result.get(rankName)++);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return result;
+    }
 
     /**
      * remove character from team
      *
      * @param character
      */
-//    public void removeCharacterFromTeam(Character character) {
-//        characterTeam.remove(character);
-//    }
+    public void removeCharacterFromTeam(Character character) {
+        characterTeam.remove(character);
+    }
 }

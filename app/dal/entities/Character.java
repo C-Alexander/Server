@@ -108,7 +108,6 @@ public class Character {
         return output;
     }
 
-
     public int getId() {
         return id;
     }
