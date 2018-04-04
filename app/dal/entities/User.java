@@ -8,7 +8,8 @@ import javax.persistence.*;
         @NamedQuery(name = "User.getAll", query = "select u from User as u"),
         @NamedQuery(name = "User.findOne", query = "select u from User as u WHERE u.id = :id"),
         @NamedQuery(name = "User.ifExists", query = "select (COUNT(*) > 0) as exists  from User as u WHERE u.username = :username"),
-        @NamedQuery(name = "User.login", query = "select (COUNT(*) > 0) as exists  from User as u WHERE u.username = :username and u.password = :password")
+        @NamedQuery(name = "User.login", query = "select (COUNT(*) > 0) as exists  from User as u WHERE u.username = :username and u.password = :password"),
+        @NamedQuery(name = "User.getCharacterTeam", query = "select (COUNT(*) > 0) as exists  from User as u WHERE u.username = :username"),
 })
 public class User {
     @Id
@@ -16,6 +17,9 @@ public class User {
     private int id;
     private String username;
     private String password;
+
+    @Entity
+    @Table(name = "characterTeam")
     private List<Character> characterTeam;
 
     User() {

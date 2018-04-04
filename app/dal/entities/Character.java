@@ -23,6 +23,7 @@ import static com.sun.tools.doclint.Entity.and;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "User.getAll", query = "select c from Character c")
+        @NamedQuery(name = "User.findOne", query = "select c from Character c WHERE c.id = :id")
 })
 public class Character {
 
