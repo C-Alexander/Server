@@ -12,4 +12,6 @@ public interface UserContext {
     Boolean ifExists(String username);
 
     Boolean login(User user);
+
+    User getAndAuthenticate(String username, String password);
 }

@@ -1,6 +1,11 @@
+import akka.actor.ActorSystem;
 import com.google.inject.AbstractModule;
+import dal.contexts.JPASessionContext;
 import dal.contexts.JPAUserContext;
+import dal.contexts.SessionContext;
 import dal.contexts.UserContext;
+import dal.executioncontexts.DatabaseExecutionContext;
+import dal.repositories.SessionRepository;
 import dal.repositories.UserRepository;
 
 /**
@@ -17,8 +22,13 @@ public class Module extends AbstractModule {
 
     @Override
     public void configure() {
+        bind(DatabaseExecutionContext.class);
+
         bind(UserRepository.class);
+        bind(SessionRepository.class);
+
         bind(UserContext.class).to(JPAUserContext.class);
+        bind(SessionContext.class).to(JPASessionContext.class);
     }
 
 }
