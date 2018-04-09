@@ -1,14 +1,10 @@
 package dal.contexts;
 
 import dal.entities.Session;
-import dal.entities.User;
 import dal.executioncontexts.DatabaseExecutionContext;
-import play.Logger;
 import play.db.jpa.JPAApi;
-import scala.concurrent.ExecutionContext;
 
 import javax.persistence.EntityManager;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class JPASessionContext implements SessionContext {

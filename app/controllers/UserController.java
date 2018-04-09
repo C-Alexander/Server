@@ -3,21 +3,19 @@ package controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.NullNode;
 import dal.entities.Session;
 import dal.entities.User;
 import dal.repositories.SessionRepository;
 import dal.repositories.UserRepository;
 import org.apache.commons.codec.digest.Crypt;
-import org.hibernate.id.GUIDGenerator;
 import play.Logger;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Result;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.UUID;
 
 
 @Singleton
@@ -40,7 +38,7 @@ public class UserController extends Controller {
         user.setUsername(body.get("username").asText());
 
         if (userRepository.IfExists(user.getUsername()))
-            return status(409, "Username already exists, have you tried logging in?");
+            return status(Http.Status.CONFLICT, "Username already exists, have you tried logging in?");
         user.setPassword(encrypt(body.get("password")));
 
         userRepository.createUser(user);
