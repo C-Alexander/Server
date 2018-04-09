@@ -18,7 +18,7 @@ public class WebSocketActor extends AbstractActor {
 
     private final ActorRef out;
     private ActorRef game;
-    private String playerId;
+    private int playerId;
 
     public WebSocketActor(ActorRef out) {
         this.out = out;
@@ -40,6 +40,7 @@ public class WebSocketActor extends AbstractActor {
     }
 
     private void handlePacket(Packet packet) {
+        Logger.debug("Handling packet of type:" + packet.type);
         switch(packet.type) {
             case JOIN_GAME:
                 handleJoinGame(packet);
@@ -51,21 +52,29 @@ public class WebSocketActor extends AbstractActor {
     }
 
     private void handleJoinGame(Packet packet) {
+        Logger.debug("New player trying to join");
+
         JoinGameMessage joinGameMessage = (JoinGameMessage)packet.data;
         Player player = new Player();
-        player.setId(joinGameMessage.getPlayerId());
+        player.setId(joinGameMessage.getUserId());
         player.setOut(out);
         player.setPlayerActor(getSelf());
 
         this.playerId = player.getId();
 
-        //get all actors ahead of this one in the hierarchy named GameManager
-        ActorSelection selection = getContext().actorSelection("../../GameManager");
-
         PlayerJoinedMessage message = new PlayerJoinedMessage();
         message.setPlayer(player);
+        message.setSessionId(joinGameMessage.getSessionId());
         message.setGame(joinGameMessage.getGameId());
-
+        //get all actors ahead of this one in the hierarchy named GameManager
+        ActorSelection selection = getContext().actorSelection("../../GameManager");
         selection.tell(message, getSelf());
+//        verifyPlayer(message);
+
+    }
+
+    private void verifyPlayer(PlayerJoinedMessage playerToAdd) {
+        ActorRef verificationActor = getContext().actorOf(VerificationActor.props());
+        verificationActor.tell(playerToAdd, getSelf());
     }
 }
