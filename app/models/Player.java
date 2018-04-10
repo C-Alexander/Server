@@ -6,7 +6,7 @@ public class Player {
     private ActorRef out;
     private ActorRef playerActor;
     private ActorRef game;
-    private String id;
+    private int id;
 
     public ActorRef getGame() {
         return game;
@@ -32,11 +32,11 @@ public class Player {
         this.out = out;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 }

@@ -15,27 +15,27 @@ public class JPAUserContext implements UserContext {
         this.jpaApi = jpaApi;
     }
 
-    protected EntityManager getEntityManager() {
+    private EntityManager getEntityManager() {
         return this.jpaApi.em();
     }
 
     @Override
     public void save(User user) {
-        getEntityManager().persist(User);
+        getEntityManager().persist(user);
     }
 
     @Override
     public List<User> findAll() {
         return getEntityManager()
                 .createNamedQuery("User.getAll", User.class)
-                .getResultList();.
+                .getResultList();
     }
 
     @Override
-    public Boolean ifExists(String Username) {
+    public Boolean ifExists(String username) {
         return getEntityManager()
                 .createNamedQuery("User.ifExists", Boolean.class)
-                .setParameter("Username", Username)
+                .setParameter("username", username)
                 .getSingleResult();
     }
 
@@ -49,10 +49,12 @@ public class JPAUserContext implements UserContext {
     }
 
     @Override
-    public User findOne(int id) {
+    public User getAndAuthenticate(String username, String password) {
         return getEntityManager()
-                .createNamedQuery("User.findOne", User.class)
-                .setParameter("id", id)
-                .getSingleResult();
+                .createNamedQuery("User.getAndAuthenticate", User.class)
+                .setParameter("username", username)
+                .setParameter("password", password)
+                .setMaxResults(1)
+                .getResultList().stream().findFirst().orElse(null);
     }
 }

@@ -1,12 +1,14 @@
 package msgs;
 
 public class JoinGameMessage extends Message {
-    String gameId;
-    String playerId;
+    private String gameId;
+    private String sessionId;
+    private int userId;
 
-    public JoinGameMessage(String gameId, String playerId) {
+    public JoinGameMessage(String gameId, String sessionId, int userId) {
         this.gameId = gameId;
-        this.playerId = playerId;
+        this.userId = userId;
+        this.sessionId = sessionId;
     }
 
     public JoinGameMessage () {}
@@ -15,7 +17,15 @@ public class JoinGameMessage extends Message {
         return gameId;
     }
 
-    public String getPlayerId() {
-        return playerId;
+    public int getUserId() {
+        return userId;
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 }

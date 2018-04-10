@@ -8,10 +8,14 @@
 GET         /                    controllers.GameController.index
 GET         /games               controllers.GameController.allGames
 POST        /games               controllers.GameController.newGame
+
+
+#not restfull
 GET         /game                controllers.GameController.game
 GET         /users               controllers.UserController.getUsers
 POST        /register            controllers.UserController.createUser
 POST        /login               controllers.UserController.login
+POST        /users/getBySession  controllers.UserController.getUserBySession
 
 
 # Map static resources from the /public folder to the /assets URL path
