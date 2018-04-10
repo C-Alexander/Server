@@ -33,5 +33,7 @@ public class UserRepository {
         return context.login(user);
     }
 
-    public User findOne(int id){return context.findOne(id);}
+    public User getAndAuthenticate(String username, String password) {
+        return context.getAndAuthenticate(username, password);
+    }
 }

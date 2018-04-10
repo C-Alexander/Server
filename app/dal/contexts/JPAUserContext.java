@@ -15,7 +15,7 @@ public class JPAUserContext implements UserContext {
         this.jpaApi = jpaApi;
     }
 
-    protected EntityManager getEntityManager() {
+    private EntityManager getEntityManager() {
         return this.jpaApi.em();
     }
 
@@ -49,10 +49,12 @@ public class JPAUserContext implements UserContext {
     }
 
     @Override
-    public User findOne(int id) {
+    public User getAndAuthenticate(String username, String password) {
         return getEntityManager()
-                .createNamedQuery("User.findOne", User.class)
-                .setParameter("id", id)
-                .getSingleResult();
+                .createNamedQuery("User.getAndAuthenticate", User.class)
+                .setParameter("username", username)
+                .setParameter("password", password)
+                .setMaxResults(1)
+                .getResultList().stream().findFirst().orElse(null);
     }
 }

@@ -7,9 +7,10 @@ import javax.persistence.*;
 @NamedQueries({
         @NamedQuery(name = "User.getAll", query = "select u from User as u"),
         @NamedQuery(name = "User.findOne", query = "select u from User as u WHERE u.id = :id"),
-        @NamedQuery(name = "User.ifExists", query = "select (COUNT(*) > 0) as exists  from User as u WHERE u.username = :username"),
-        @NamedQuery(name = "User.login", query = "select (COUNT(*) > 0) as exists  from User as u WHERE u.username = :username and u.password = :password"),
-        @NamedQuery(name = "User.getCharacterTeam", query = "select (COUNT(*) > 0) as exists  from User as u WHERE u.username = :username"),
+        @NamedQuery(name = "User.ifExists", query = "select (CASE WHEN COUNT(*) > 0 THEN true ELSE false END) as exists from User as u WHERE u.username = :username"),
+        @NamedQuery(name = "User.login", query = "select (CASE WHEN COUNT(*) > 0 THEN true ELSE false END) as exists from User as u WHERE u.username = :username and u.password = :password"),
+        @NamedQuery(name = "User.getAndAuthenticate", query = "select u from User as u WHERE u.username = :username and u.password = :password")
+
 })
 public class User {
     @Id
@@ -30,7 +31,9 @@ public class User {
         return username;
     }
 
-    public void setUsername(String name) { this.username = name; }
+    public void setUsername(String name) {
+        this.username = name;
+    }
 
     public String getPassword() {
         return password;

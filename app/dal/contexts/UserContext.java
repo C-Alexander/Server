@@ -13,5 +13,5 @@ public interface UserContext {
 
     Boolean login(User user);
 
-    User findOne(int id);
+    User getAndAuthenticate(String username, String password);
 }

@@ -64,6 +64,7 @@ public class GameController extends Controller {
         }
 
         public WebSocket game() {
+            Logger.debug("Trying to make a new connection...");
             return WebSocket.json(Packet.class).accept(request -> ActorFlow.actorRef(WebSocketActor::props, actorSystem, mat));
     }
 }
