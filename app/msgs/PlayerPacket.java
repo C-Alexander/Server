@@ -4,7 +4,7 @@ public class PlayerPacket extends Packet {
     private String playerId;
 
     public PlayerPacket(Packet packet, String playerId) {
-        super(packet.type, packet.data);
+        super(packet.messageType, packet.data);
         this.playerId = playerId;
     }
 

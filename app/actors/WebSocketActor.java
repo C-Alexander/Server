@@ -1,13 +1,9 @@
 package actors;
 
 import akka.actor.*;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import models.Player;
 import msgs.*;
 import play.Logger;
-
-import java.io.IOException;
 
 public class WebSocketActor extends AbstractActor {
 
@@ -40,7 +36,8 @@ public class WebSocketActor extends AbstractActor {
     }
 
     private void handlePacket(Packet packet) {
-        switch(packet.type) {
+        Logger.info("Handling packet " + packet.messageType);
+        switch(packet.messageType) {
             case JOIN_GAME:
                 handleJoinGame(packet);
                 break;
@@ -56,12 +53,9 @@ public class WebSocketActor extends AbstractActor {
         player.setId(joinGameMessage.getPlayerId());
         player.setOut(out);
         player.setPlayerActor(getSelf());
-
         this.playerId = player.getId();
-
         //get all actors ahead of this one in the hierarchy named GameManager
         ActorSelection selection = getContext().actorSelection("../../GameManager");
-
         PlayerJoinedMessage message = new PlayerJoinedMessage();
         message.setPlayer(player);
         message.setGame(joinGameMessage.getGameId());
