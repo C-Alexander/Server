@@ -21,21 +21,21 @@ public class JPAUserContext implements UserContext {
 
     @Override
     public void save(User user) {
-        getEntityManager().persist(User);
+        getEntityManager().persist(user);
     }
 
     @Override
     public List<User> findAll() {
         return getEntityManager()
                 .createNamedQuery("User.getAll", User.class)
-                .getResultList();.
+                .getResultList();
     }
 
     @Override
-    public Boolean ifExists(String Username) {
+    public Boolean ifExists(String username) {
         return getEntityManager()
                 .createNamedQuery("User.ifExists", Boolean.class)
-                .setParameter("Username", Username)
+                .setParameter("username", username)
                 .getSingleResult();
     }
 

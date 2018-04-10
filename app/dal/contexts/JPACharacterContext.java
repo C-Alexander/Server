@@ -21,14 +21,14 @@ public class JPACharacterContext implements CharacterContext {
 
     @Override
     public void save(Character character) {
-        getEntityManager().persist(Character);
+        getEntityManager().persist(character);
     }
 
     @Override
     public List<Character> findAll() {
         return getEntityManager()
                 .createNamedQuery("Character.getAll", Character.class)
-                .getResultList();.
+                .getResultList();
     }
 
     @Override

@@ -1,19 +1,6 @@
 package dal.entities;
 
-import ch.qos.logback.classic.db.names.TableName;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import works.maatwerk.generals.ClassEnum;
-
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import static com.sun.tools.doclint.Entity.and;
 
 /**
  *
@@ -23,7 +10,7 @@ import static com.sun.tools.doclint.Entity.and;
 @Entity
 @Table(name = "Character")
 @NamedQueries({
-        @NamedQuery(name = "Character.getAll", query = "select c from Character as c")
+        @NamedQuery(name = "Character.getAll", query = "select c from Character as c"),
         @NamedQuery(name = "Character.findOne", query = "select c from Character as c WHERE c.id = :id")
 })
 public class Character {
