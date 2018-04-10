@@ -21,9 +21,10 @@ import static com.sun.tools.doclint.Entity.and;
  */
 @SuppressWarnings("WeakerAccess")
 @Entity
+@Table(name = "Character")
 @NamedQueries({
-        @NamedQuery(name = "User.getAll", query = "select c from Character c")
-        @NamedQuery(name = "User.findOne", query = "select c from Character c WHERE c.id = :id")
+        @NamedQuery(name = "Character.getAll", query = "select c from Character as c")
+        @NamedQuery(name = "Character.findOne", query = "select c from Character as c WHERE c.id = :id")
 })
 public class Character {
 
