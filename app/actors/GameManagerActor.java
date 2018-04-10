@@ -36,6 +36,7 @@ public class GameManagerActor extends AbstractActor {
     }
 
     private void handleJoiningPlayer(PlayerJoinedMessage message) {
+        Logger.debug("Handling joining player: " + message.getPlayer().getId());
             ActorRef game = games.getOrDefault(
                     message.getGame(),
                     getContext().actorOf(GameActor.props())

@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class GameActor extends AbstractActor {
-    private HashMap<String, Player> players;
+    private HashMap<Integer, Player> players;
 
     public static Props props() {
         return Props.create(GameActor.class);
@@ -39,6 +39,8 @@ public class GameActor extends AbstractActor {
     }
 
     private void handleJoiningPlayer(PlayerJoinedMessage message) {
+        Logger.info("Broadcasting new player: " + message.getPlayer().getId());
+
         Player newPlayer = message.getPlayer();
         newPlayer.setGame(getSelf());
         players.putIfAbsent(newPlayer.getId(), newPlayer);
