@@ -2,57 +2,51 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dal.entities.Queue;
-import dal.repositories.LobbyRepository;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import dal.entities.Game;
+import dal.entities.Session;
+import dal.repositories.GameRepository;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.ArrayList;
-import java.util.List;
-
 
 @Singleton
 public class LobbyController extends Controller {
 
-    private final LobbyRepository lobbyRepository;
+    private final GameRepository gameRepository;
     private ObjectMapper mapper;
-    private List<Queue> queueList;
 
     @Inject
-    public LobbyController(LobbyRepository lobbyRepository) {
-        this.lobbyRepository = lobbyRepository;
+    public LobbyController(GameRepository gameRepository) {
+        this.gameRepository = gameRepository;
         mapper = new ObjectMapper();
-        queueList = new ArrayList<>();
     }
 
     @Transactional
     public Result addToQueue() {
         JsonNode body = request().body().asJson();
 
-        Queue newPlayer = new Queue();
-        newPlayer.setId(body.get("id").asInt());
-        lobbyRepository.addPlayer(newPlayer);
+        String uuid = body.get("sessionid").asText();
 
-        queueList = lobbyRepository.getQueue();
+        Game game = gameRepository.getOpenGame();
+        if (game == null) { game = new Game(); }
+        gameRepository.saveGame(game);
 
-        if (queueList.size() >= 2) {
+        Session player = new Session();
+        player.setSessionId(uuid);
+        gameRepository.saveSession(player);
+        game.addSession(player);
 
-            Queue player1 = queueList.get(0);
-            queueList.remove(0);
-            lobbyRepository.removePlayer(player1);
+        ObjectNode json = mapper.createObjectNode();
 
-            Queue player2 = queueList.get(0);
-            queueList.remove(0);
-            lobbyRepository.removePlayer(player2);
+        json.put("sessionid", player.getSessionId());
+        json.put("gameid", game.getId());
+        json.put("size", game.getSessionList().size());
 
-            //add first 2 users to a game
-
-        }
-
-        return ok(body.get("id").asText());
+        return ok(json.toString());
 
     }
 }
