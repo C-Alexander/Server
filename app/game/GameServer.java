@@ -17,12 +17,6 @@ public class GameServer {
 
         if (moveMessage == null) System.out.println("hallo");
         MoveMessage mm = (MoveMessage) moveMessage.data;
-
-
-
-
-
-
 //        System.out.println(mm.getX());
 //        System.out.println(mm.getY());
 //        System.out.println(mm.getId());
@@ -33,8 +27,5 @@ public class GameServer {
         packet.data = mu;
         packet.messageType = MessageType.MOVE;
         gameActor.tell(packet, ActorRef.noSender());
-
-
-
     }
 }
