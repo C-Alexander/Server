@@ -1,27 +1,16 @@
 package actors;
 
-import akka.actor.*;
-import akka.parboiled2.support.Join;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import akka.actor.AbstractActor;
+import akka.actor.ActorSelection;
+import akka.actor.PoisonPill;
 import com.google.inject.Inject;
 import dal.repositories.SessionRepository;
-import dal.repositories.UserRepository;
-import models.Player;
-import msgs.*;
+import msgs.PlayerJoinedMessage;
 import play.Logger;
-
-import java.io.IOException;
-import java.util.HashMap;
 
 public class VerificationActor extends AbstractActor {
     @Inject
     public SessionRepository sessionRepository;
-
-    public static Props props() {
-        return Props.create(VerificationActor.class);
-    }
-
 
     @Override
     public Receive createReceive() {

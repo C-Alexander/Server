@@ -1,4 +1,5 @@
-import akka.actor.ActorSystem;
+import actors.VerificationActor;
+import actors.VerificationActorCreator;
 import com.google.inject.AbstractModule;
 import dal.contexts.JPASessionContext;
 import dal.contexts.JPAUserContext;
@@ -23,6 +24,9 @@ public class Module extends AbstractModule {
     @Override
     public void configure() {
         bind(DatabaseExecutionContext.class);
+
+        bind(VerificationActor.class);
+        bind(VerificationActorCreator.class);
 
         bind(UserRepository.class);
         bind(SessionRepository.class);
