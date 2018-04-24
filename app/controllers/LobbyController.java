@@ -35,6 +35,7 @@ public class LobbyController extends Controller {
         if (game == null) { game = new Game(); }
         gameRepository.saveGame(game);
 
+        // Voorkom dubbele sessions
         Session player = new Session();
         player.setSessionId(uuid);
         gameRepository.saveSession(player);

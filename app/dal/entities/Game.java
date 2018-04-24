@@ -1,5 +1,6 @@
 package dal.entities;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,6 +16,10 @@ public class Game {
             joinColumns = @JoinColumn(name = "gameId", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "sessionId", referencedColumnName = "id"))
     private List<Session> sessions;
+
+    public Game() {
+        sessions = new ArrayList<>();
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
