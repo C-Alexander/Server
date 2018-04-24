@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dal.entities.Session;
 import dal.entities.User;
+import dal.entities.Character;
 import dal.repositories.SessionRepository;
 import dal.repositories.UserRepository;
 import org.apache.commons.codec.digest.Crypt;
@@ -97,6 +98,46 @@ public class UserController extends Controller {
     public Result getUsers() {
         try {
             return ok(mapper.writeValueAsString(userRepository.getAllUsers()));
+        } catch (JsonProcessingException e) {
+            return (internalServerError(e.getMessage()));
+        }
+    }
+
+    @Transactional
+    public Result addToTeam(int userId, Character character) {
+        JsonNode body = request().body().asJson();
+        User user = userRepository.getUser(userId);
+        user.addCharacterToTeam(character);
+        userRepository.save(user);
+
+        try {
+            return created(mapper.writeValueAsString(character) + " added to characterTeam of user " + user.getId());
+        } catch (JsonProcessingException e) {
+            Logger.error("Unknown message: " + e.getMessage());
+            return internalServerError(e.getMessage());
+        }
+    }
+
+    @Transactional
+    public Result removeFromTeam(int userId, Character character) {
+        JsonNode body = request().body().asJson();
+        User user = userRepository.getUser(userId);
+        user.removeCharacterFromTeam(character);
+        userRepository.save(user);
+
+        try {
+            return created(mapper.writeValueAsString(character) + " removed from characterTeam of user " + user.getId());
+        } catch (JsonProcessingException e) {
+            Logger.error("Unknown message: " + e.getMessage());
+            return internalServerError(e.getMessage());
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public Result getTeam(int id) {
+        try {
+            userRepository.getTeam(id);
+            return ok(mapper.writeValueAsString(userRepository.getTeam(id)));
         } catch (JsonProcessingException e) {
             return (internalServerError(e.getMessage()));
         }

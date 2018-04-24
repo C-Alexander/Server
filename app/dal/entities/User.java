@@ -1,6 +1,9 @@
 package dal.entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @Entity
 @Table(name = "Player")
@@ -19,13 +22,10 @@ public class User {
     private String username;
     private String password;
 
-    @Entity
-    @Table(name = "characterTeam")
+    @OneToMany
     private List<Character> characterTeam;
 
-    User() {
-        characterTeam = new ArrayList<Character>();
-    }
+    public User() { characterTeam = new ArrayList<Character>(); }
 
     public String getUsername() {
         return username;
@@ -53,6 +53,8 @@ public class User {
 
     public void setCharacterTeam(List<Character> characterTeam) { this.characterTeam = characterTeam; }
 
+    private final int maxTeamSize = 10;
+
     /**
      * adds character to team if character isn't on team yet and maximum teamsize will not be exceeded
      * for now only allowed to have 1 hero, 1 general and 3 grunts.
@@ -79,8 +81,9 @@ public class User {
                     if (rankCount.get(rankName) < 3) {
                         characterTeam.add(character);
                     }
+                    break;
                 default:
-                    return;
+                    break;
             }
         }
     }
@@ -90,8 +93,8 @@ public class User {
      * doing it once for performance's sake (not needing to go through the for loop multiple times to see the amount
      * of units)
      *
-     * @param characters
-     * @return
+     * @param characters list of characters
+     * @return hashMap with amount of characters by class
      */
     private HashMap<RankName, Integer> getCharacterCount(List<Character> characters) {
         HashMap<RankName, Integer> result = new HashMap<RankName, Integer>();
@@ -103,13 +106,13 @@ public class User {
             RankName rankName = c.getRank().getRankName();
             switch (rankName) {
                 case HERO:
-                    result.put(RankName.HERO, (Integer)result.get(rankName)++);
+                    result.put(RankName.HERO, result.get(rankName)+1);
                     break;
                 case GENERAL:
-                    result.put(RankName.GENERAL, (Integer)result.get(rankName)++);
+                    result.put(RankName.GENERAL, result.get(rankName)+1);
                     break;
                 case GRUNT:
-                    result.put(RankName.GRUNT, (Integer)result.get(rankName)++);
+                    result.put(RankName.GRUNT, result.get(rankName)+1);
                     break;
                 default:
                     break;
