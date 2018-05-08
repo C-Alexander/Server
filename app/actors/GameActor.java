@@ -1,12 +1,14 @@
 package actors;
 
 import akka.actor.*;
-import game.GameServer;
+import akka.parboiled2.support.Join;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import models.Player;
 import msgs.*;
 import play.Logger;
-import play.libs.Json;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 public class GameActor extends AbstractActor {
@@ -48,7 +50,8 @@ public class GameActor extends AbstractActor {
     }
 
     private void handleJoiningPlayer(PlayerJoinedMessage message) {
-        Logger.info("handling joining player : " + message.getPlayer().getId());
+        Logger.info("Broadcasting new player: " + message.getPlayer().getId());
+
         Player newPlayer = message.getPlayer();
         newPlayer.setGame(getSelf());
         players.putIfAbsent(newPlayer.getId(), newPlayer);
@@ -58,6 +61,7 @@ public class GameActor extends AbstractActor {
         getSender().tell(successMessage, getSelf());
 
         for (Player player : players.values()) {
+            Logger.info("Player found, id: " + player.getId());
             player.getOut().tell("Welcome, " + newPlayer.getId() + " to Game " + getSelf().path(), getSelf());
         }
     }

@@ -3,6 +3,11 @@ package msgs;
 import models.Player;
 
 public class PlayerJoinedMessage extends Message {
+
+    Player player;
+    String game;
+    String sessionId;
+
     public Player getPlayer() {
         return player;
     }
@@ -10,8 +15,6 @@ public class PlayerJoinedMessage extends Message {
     public void setPlayer(Player player) {
         this.player = player;
     }
-
-    Player player;
 
     public String getGame() {
         return game;
@@ -21,5 +24,11 @@ public class PlayerJoinedMessage extends Message {
         this.game = game;
     }
 
-    String game;
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
 }

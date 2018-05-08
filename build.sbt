@@ -22,6 +22,7 @@ libraryDependencies += "org.webjars" % "bootstrap" % "3.3.6"
 
 libraryDependencies += guice
 libraryDependencies += ws
+libraryDependencies += ehcache
 
 libraryDependencies += "org.assertj" % "assertj-core" % "3.8.0" % Test
 libraryDependencies += "org.awaitility" % "awaitility" % "3.0.0" % Test

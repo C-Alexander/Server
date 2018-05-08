@@ -1,6 +1,10 @@
 package actors;
 
 import akka.actor.*;
+import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
+import akka.actor.Props;
+import com.google.inject.Injector;
 import models.Player;
 import msgs.*;
 import play.Logger;
@@ -8,16 +12,19 @@ import play.Logger;
 public class WebSocketActor extends AbstractActor {
 
 
-    public static Props props(ActorRef out) {
-        return Props.create(WebSocketActor.class, out);
-    }
+    private Injector injector;
 
     private final ActorRef out;
     private ActorRef game;
-    private String playerId;
+    private int playerId;
 
-    public WebSocketActor(ActorRef out) {
+    public WebSocketActor(ActorRef out, Injector injector) {
         this.out = out;
+        this.injector = injector;
+    }
+
+    public static Props props(ActorRef out, Injector injector) {
+        return Props.create(WebSocketActor.class, out, injector);
     }
 
     @Override
@@ -50,7 +57,7 @@ public class WebSocketActor extends AbstractActor {
     private void handleJoinGame(Packet packet) {
         JoinGameMessage joinGameMessage = (JoinGameMessage)packet.data;
         Player player = new Player();
-        player.setId(joinGameMessage.getPlayerId());
+        player.setId(joinGameMessage.getUserId());
         player.setOut(out);
         player.setPlayerActor(getSelf());
         this.playerId = player.getId();
