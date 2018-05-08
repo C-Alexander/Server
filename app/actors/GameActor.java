@@ -10,8 +10,8 @@ import play.libs.Json;
 import java.util.HashMap;
 
 public class GameActor extends AbstractActor {
-    private HashMap<String, Player> players;
     GameServer gameServer =  new GameServer(getSelf());
+    private HashMap<Integer, Player> players;
 
     public static Props props() {
         return Props.create(GameActor.class);
@@ -48,7 +48,8 @@ public class GameActor extends AbstractActor {
     }
 
     private void handleJoiningPlayer(PlayerJoinedMessage message) {
-        Logger.info("handling joining player : " + message.getPlayer().getId());
+        Logger.info("Broadcasting new player: " + message.getPlayer().getId());
+
         Player newPlayer = message.getPlayer();
         newPlayer.setGame(getSelf());
         players.putIfAbsent(newPlayer.getId(), newPlayer);

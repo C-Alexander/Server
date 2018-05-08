@@ -1,6 +1,10 @@
 package actors;
 
 import akka.actor.*;
+import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
+import akka.actor.Props;
+import com.google.inject.Injector;
 import models.Player;
 import msgs.*;
 import play.Logger;
@@ -8,16 +12,19 @@ import play.Logger;
 public class WebSocketActor extends AbstractActor {
 
 
-    public static Props props(ActorRef out) {
-        return Props.create(WebSocketActor.class, out);
-    }
+    private Injector injector;
 
     private final ActorRef out;
     private ActorRef game;
-    private String playerId;
+    private int playerId;
 
-    public WebSocketActor(ActorRef out) {
+    public WebSocketActor(ActorRef out, Injector injector) {
         this.out = out;
+        this.injector = injector;
+    }
+
+    public static Props props(ActorRef out, Injector injector) {
+        return Props.create(WebSocketActor.class, out, injector);
     }
 
     @Override
@@ -36,7 +43,7 @@ public class WebSocketActor extends AbstractActor {
     }
 
     private void handlePacket(Packet packet) {
-        Logger.info("Handling packet " + packet.messageType);
+        Logger.debug("Handling packet " + packet.messageType);
         switch(packet.messageType) {
             case JOIN_GAME:
                 handleJoinGame(packet);
@@ -48,18 +55,30 @@ public class WebSocketActor extends AbstractActor {
     }
 
     private void handleJoinGame(Packet packet) {
+        Logger.debug("New player trying to join");
+
         JoinGameMessage joinGameMessage = (JoinGameMessage)packet.data;
         Player player = new Player();
-        player.setId(joinGameMessage.getPlayerId());
+        player.setId(joinGameMessage.getUserId());
         player.setOut(out);
         player.setPlayerActor(getSelf());
+
         this.playerId = player.getId();
-        //get all actors ahead of this one in the hierarchy named GameManager
-        ActorSelection selection = getContext().actorSelection("../../GameManager");
+
         PlayerJoinedMessage message = new PlayerJoinedMessage();
         message.setPlayer(player);
+        message.setSessionId(joinGameMessage.getSessionId());
         message.setGame(joinGameMessage.getGameId());
+        //get all actors ahead of this one in the hierarchy named GameManager
+//        ActorSelection selection = getContext().actorSelection("../../GameManager");
+//        selection.tell(message, getSelf());
+        verifyPlayer(message);
 
-        selection.tell(message, getSelf());
+    }
+
+    private void verifyPlayer(PlayerJoinedMessage playerToAdd) {
+        VerificationActorCreator creator = injector.getInstance(VerificationActorCreator.class);
+        ActorRef verificationActor = getContext().actorOf(Props.create(creator));
+        verificationActor.tell(playerToAdd, getSelf());
     }
 }

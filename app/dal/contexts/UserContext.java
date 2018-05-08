@@ -8,4 +8,10 @@ public interface UserContext {
     void save(User user);
 
     List<User> findAll();
+
+    Boolean ifExists(String username);
+
+    Boolean login(User user);
+
+    User getAndAuthenticate(String username, String password);
 }
