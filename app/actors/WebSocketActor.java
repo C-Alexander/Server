@@ -58,6 +58,8 @@ public class WebSocketActor extends AbstractActor {
         Logger.debug("New player trying to join");
 
         JoinGameMessage joinGameMessage = (JoinGameMessage)packet.data;
+
+        System.out.println(joinGameMessage.getUserId());
         Player player = new Player();
         player.setId(joinGameMessage.getUserId());
         player.setOut(out);

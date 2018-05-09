@@ -24,6 +24,7 @@ public class GameActor extends AbstractActor {
 
     @Override
     public Receive createReceive() {
+        Logger.debug("Received");
         return receiveBuilder()
                 .match(PlayerJoinedMessage.class, this::handleJoiningPlayer)
                 .match(PlayerPacket.class, this::handlePlayerAction)
@@ -37,6 +38,7 @@ public class GameActor extends AbstractActor {
     }
 
     private void handlePlayerAction(PlayerPacket playerPacket) {
+        Logger.debug("Got PlayerPacket");
         switch (playerPacket.messageType) {
             case MOVE :
                 this.gameServer.moveCharacter(playerPacket);
@@ -64,9 +66,9 @@ public class GameActor extends AbstractActor {
     }
 
     public void broadcastToPlayers(Packet packet){
+        Logger.debug("Broadcasting new player: " + "Sending PackageS");
         for (Player player : players.values())
             player.getOut().tell(Json.toJson(packet).toString(), getSelf());
-
     }
 
 }
