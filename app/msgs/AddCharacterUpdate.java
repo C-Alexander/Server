@@ -1,7 +1,7 @@
 package msgs;
 
 public class AddCharacterUpdate extends Message {
-
+    Character character;
     public AddCharacterUpdate() {
     }
 
@@ -12,8 +12,4 @@ public class AddCharacterUpdate extends Message {
     public void setCharacter(Character character) {
         this.character = character;
     }
-
-    Character character;
-
-
 }

@@ -4,8 +4,6 @@ import actors.GameActor;
 import akka.actor.ActorRef;
 import akka.actor.ActorRefFactory;
 import msgs.*;
-
-
 public class GameServer {
     private ActorRef gameActor;
 

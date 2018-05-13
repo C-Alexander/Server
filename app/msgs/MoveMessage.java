@@ -4,7 +4,14 @@ public class MoveMessage extends Message {
 
     int x;
     int y;
+    int id;
+    public MoveMessage() {}
 
+    public MoveMessage(int x, int y, int id) {
+        this.x = x;
+        this.y = y;
+        this.id = id;
+    }
     public int getX() {
         return x;
     }
@@ -29,13 +36,5 @@ public class MoveMessage extends Message {
         this.id = id;
     }
 
-    int id;
 
-    public MoveMessage(int x, int y, int id) {
-        this.x = x;
-        this.y = y;
-        this.id = id;
-    }
-
-    public MoveMessage() {}
 }

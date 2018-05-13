@@ -3,6 +3,7 @@ package msgs;
 public class AttackMessage extends Message {
     public int CharacterId;
     public int attackX;
+    public int attackY;
 
     public AttackMessage() {
     }
@@ -36,8 +37,4 @@ public class AttackMessage extends Message {
     public void setAttackY(int attackY) {
         this.attackY = attackY;
     }
-
-    public int attackY;
-
-
 }
