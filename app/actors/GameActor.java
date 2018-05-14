@@ -38,13 +38,14 @@ public class GameActor extends AbstractActor {
     }
 
     private void handlePlayerAction(PlayerPacket playerPacket) {
-        Logger.debug("Got PlayerPacket");
+
         switch (playerPacket.messageType) {
             case MOVE :
                 this.gameServer.moveCharacter(playerPacket);
                 break;
-
-
+            case ATTACK:
+                this.gameServer.attackCharacter(playerPacket);
+                break;
             default: Logger.info("Got playerpacket");
         }
     }
@@ -60,8 +61,13 @@ public class GameActor extends AbstractActor {
         successMessage.setGame(getSelf());
         getSender().tell(successMessage, getSelf());
 
+
         for (Player player : players.values()) {
             player.getOut().tell("Welcome, " + newPlayer.getId() + " to Game " + getSelf().path(), getSelf());
+            if(player.getId() == newPlayer.getId()){
+                this.gameServer.sendClientInfo(player.getOut());
+            }
+
         }
     }
 
