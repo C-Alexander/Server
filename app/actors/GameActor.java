@@ -65,7 +65,7 @@ public class GameActor extends AbstractActor {
         for (Player player : players.values()) {
             player.getOut().tell("Welcome, " + newPlayer.getId() + " to Game " + getSelf().path(), getSelf());
             if(player.getId() == newPlayer.getId()){
-                this.gameServer.sendClientInfo(player.getOut());
+               // this.gameServer.sendClientInfo(player.getOut());
             }
 
         }

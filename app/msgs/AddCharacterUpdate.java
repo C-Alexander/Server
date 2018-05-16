@@ -1,10 +1,10 @@
 package msgs;
 
-import works.maatwerk.gamelogic.models.Character;
+import works.maatwerk.gamelogic.models.Unit;
 
 public class AddCharacterUpdate extends Message {
 
-   private Character character;
+   private Unit unit;
    private int y;
    private int x;
 
@@ -27,12 +27,12 @@ public class AddCharacterUpdate extends Message {
         this.x = x;
     }
 
-    public Character getCharacter() {
-        return character;
+    public Unit getUnit() {
+        return unit;
     }
 
-    public void setCharacter(Character character) {
-        this.character = character;
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 
 

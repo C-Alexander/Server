@@ -1,13 +1,10 @@
 package game;
 
 
-import actors.GameActor;
 import akka.actor.ActorRef;
-import akka.actor.ActorRefFactory;
-import akka.actor.dsl.Creators;
 import msgs.*;
 import play.Logger;
-import works.maatwerk.gamelogic.models.Character;
+import works.maatwerk.gamelogic.models.Unit;
 import works.maatwerk.gamelogic.models.*;
 import works.maatwerk.gamelogic.enums.*;
 import play.libs.Json;
@@ -19,8 +16,8 @@ import java.util.ArrayList;
 public class GameServer {
     private int gameObjectId = 0;
     private ActorRef gameActor;
-    private Character[][] characterLayer;
-    private final ArrayList<Character> characterMap =  new ArrayList<>();
+    private Unit[][] characterLayer;
+    private final ArrayList<Unit> characterMap =  new ArrayList<>();
 
     public GameServer(ActorRef gameActor) {
         this.gameActor = gameActor;
@@ -29,15 +26,15 @@ public class GameServer {
     }
 
     public void startGame(){
-        characterLayer = new Character[31][31];
-       Character hero1 = new Character(new Race("Test", new Stats()), new Rank(RankName.HERO), WeaponClass.VALKYRIE);
-       hero1.setId(getId());
+        characterLayer = new Unit[31][31];
+       Unit hero1 = new Unit(new Race("Test", new Stats()), new Rank(RankName.HERO), WeaponClass.SWORD);
+      hero1.setId(1);
        characterLayer[15][27] = hero1;
        characterMap.add(hero1);
 
 
-       Character hero2 = new Character(new Race("Test", new Stats()), new Rank(RankName.HERO), WeaponClass.VALKYRIE);
-       hero2.setId(getId());
+       Unit hero2 = new Unit(new Race("Test", new Stats()), new Rank(RankName.HERO), WeaponClass.SWORD);
+       hero2.setId(2);
        characterLayer[15][3] = hero2;
        characterMap.add(hero2);
 
@@ -48,13 +45,13 @@ public class GameServer {
 
     public void sendClientInfo(ActorRef actorRef){
 
-        for(Character ch: characterMap){
+        for(Unit ch: characterMap){
             Logger.debug("Broadcasting CLient Info ");
             Vector2 location = getCharacterLocation(ch.getId());
             Packet packet2 = new Packet();
             packet2.data = new AddCharacterUpdate();
             packet2.messageType = MessageType.ADDCHAR;
-            ((AddCharacterUpdate) packet2.data).setCharacter(ch);
+            ((AddCharacterUpdate) packet2.data).setUnit(ch);
             ((AddCharacterUpdate) packet2.data).setX(location.x);
             ((AddCharacterUpdate) packet2.data).setY(location.y);
            // gameActor.tell(packet2,ActorRef.noSender());
@@ -82,8 +79,8 @@ public class GameServer {
 
     public  void attackCharacter(PlayerPacket attackMessage){
         AttackMessage am = (AttackMessage) attackMessage.data;
-        Character character = getCharacterById(am.getCharacterId());
-        Character target = characterLayer[am.getAttackX()][am.getAttackY()];
+        Unit character = getCharacterById(am.getCharacterId());
+        Unit target = characterLayer[am.getAttackX()][am.getAttackY()];
         if(target != null){
             character.attack(target);
             AttackUpdate at = new AttackUpdate();
@@ -102,15 +99,15 @@ public class GameServer {
     }
 
     public void update() {
-        ArrayList<Character> remove = new ArrayList<>();
-        for (Character c : characterMap) {
+        ArrayList<Unit> remove = new ArrayList<>();
+        for (Unit c : characterMap) {
             if (!c.isAlive()) {
               Vector2  location = getCharacterLocation(c.getId());
                 characterLayer[(int) location.getX()][(int) location.getY()] = null;
                 remove.add(c);
             }
         }
-        for (Character c : remove) {
+        for (Unit c : remove) {
             characterMap.remove(c);
         }
     }
@@ -132,7 +129,7 @@ public class GameServer {
      * @param id
      * @return
      */
-    public Character getCharacterById(int id) {
+    public Unit getCharacterById(int id) {
         return this.characterMap.get(id);
     }
 
@@ -141,29 +138,29 @@ public class GameServer {
 
             return false;
         }
-        Character character = null;
-        for (Character c : this.characterMap) {
+        Unit character = null;
+        for (Unit c : this.characterMap) {
             if (c.getId() == characterId) {
                 character = c;
             }
         }
         if (character != null) {
             removeCharacter(character);
-            addCharacter(character);
+            addCharacter(character,location);
             return true;
         }
         return false;
     }
 
-    public void removeCharacter(Character character) {
+    public void removeCharacter(Unit character) {
         Vector2 location = getCharacterLocation(character.getId());
         this.characterLayer[(int) location.getX()][(int) location.getY()] = null;
-        this.characterMap.remove(character);
+      //  this.characterMap.remove(character);
     }
 
-    public void addCharacter(Character character) {
-        Vector2 location = getCharacterLocation(character.getId());
-        this.characterMap.add(character);
+    public void addCharacter(Unit character, Vector2 location) {
+   //     Vector2 location = getCharacterLocation(character.getId());
+    //    this.characterMap.add(character);
         this.characterLayer[(int) location.getX()][(int) location.getY()] = character;
     }
 
