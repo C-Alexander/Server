@@ -17,5 +17,5 @@ public interface UserContext {
 
     User getAndAuthenticate(String username, String password);
 
-    List<Character> getTeam(int id);
+   // List<Character> getTeam(int id);
 }

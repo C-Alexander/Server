@@ -1,10 +1,10 @@
 package dal.repositories;
 
-import dal.contexts.CharacterContext;
-import dal.entities.Character;
+        import dal.contexts.CharacterContext;
+        import dal.entities.Character;
 
-import javax.inject.*;
-import java.util.List;
+        import javax.inject.*;
+        import java.util.List;
 
 @Singleton
 public class CharacterRepository {

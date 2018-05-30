@@ -107,7 +107,7 @@ public class UserController extends Controller {
     public Result addToTeam(int userId, Character character) {
         JsonNode body = request().body().asJson();
         User user = userRepository.getUser(userId);
-        user.addCharacterToTeam(character);
+       // user.addCharacterToTeam(character);
         userRepository.save(user);
 
         try {
@@ -122,7 +122,7 @@ public class UserController extends Controller {
     public Result removeFromTeam(int userId, Character character) {
         JsonNode body = request().body().asJson();
         User user = userRepository.getUser(userId);
-        user.removeCharacterFromTeam(character);
+        //user.removeCharacterFromTeam(character);
         userRepository.save(user);
 
         try {

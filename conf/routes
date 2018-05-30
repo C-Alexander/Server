@@ -16,7 +16,8 @@ GET         /users               controllers.UserController.getUsers
 POST        /register            controllers.UserController.createUser
 POST        /login               controllers.UserController.login
 POST        /users/getBySession  controllers.UserController.getUserBySession
-
+GET         /weapons             controllers.WeaponController.getWeapons
+POST        /weapons/create      controllers.WeaponController.createWeapon
 GET         /characters          controllers.CharacterController.getCharacters
 
 

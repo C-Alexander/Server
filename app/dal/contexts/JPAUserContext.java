@@ -1,6 +1,7 @@
 package dal.contexts;
 
 import dal.entities.User;
+import dal.entities.Weapon;
 import play.db.jpa.JPAApi;
 
 import javax.persistence.EntityManager;
@@ -56,5 +57,13 @@ public class JPAUserContext implements UserContext {
                 .setParameter("password", password)
                 .setMaxResults(1)
                 .getResultList().stream().findFirst().orElse(null);
+    }
+
+    @Override
+    public User findOne(int id) {
+        return getEntityManager()
+                .createNamedQuery("User.findOne", User.class)
+                .setParameter("id", id)
+                .getSingleResult();
     }
 }
