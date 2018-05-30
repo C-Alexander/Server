@@ -20,7 +20,7 @@ public class AttackUpdate extends Message {
     }
 
     public void setCharacterId(int characterId) {
-        characterId = characterId;
+        this.characterId = characterId;
     }
 
 

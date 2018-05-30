@@ -22,25 +22,19 @@ public class GameServer {
     public GameServer(ActorRef gameActor) {
         this.gameActor = gameActor;
         startGame();
-
     }
+
 
     public void startGame(){
         characterLayer = new Unit[31][31];
        Unit hero1 = new Unit(new Race("Test", new Stats()), new Rank(RankName.HERO), WeaponClass.SWORD);
       hero1.setId(1);
-       characterLayer[15][27] = hero1;
+       characterLayer[15][4] = hero1;
        characterMap.add(hero1);
-
-
        Unit hero2 = new Unit(new Race("Test", new Stats()), new Rank(RankName.HERO), WeaponClass.SWORD);
        hero2.setId(2);
        characterLayer[15][3] = hero2;
        characterMap.add(hero2);
-
-
-
-
     }
 
     public void sendClientInfo(ActorRef actorRef){
@@ -72,8 +66,6 @@ public class GameServer {
            packet.messageType = MessageType.MOVE;
            gameActor.tell(packet, ActorRef.noSender());
        }
-
-
     }
 
 
@@ -91,17 +83,13 @@ public class GameServer {
             packet.messageType = MessageType.ATTACK;
             gameActor.tell(packet,ActorRef.noSender());
             update();
-
-
         }
-
-
     }
 
     public void update() {
         ArrayList<Unit> remove = new ArrayList<>();
         for (Unit c : characterMap) {
-            if (!c.isAlive()) {
+            if (!c.alive()) {
               Vector2  location = getCharacterLocation(c.getId());
                 characterLayer[(int) location.getX()][(int) location.getY()] = null;
                 remove.add(c);
@@ -130,7 +118,12 @@ public class GameServer {
      * @return
      */
     public Unit getCharacterById(int id) {
-        return this.characterMap.get(id);
+        for (Unit u : characterMap){
+            if(u.getId() == id){
+                return u;
+            }
+        }
+        return null;
     }
 
     public boolean moveCharacter(int characterId, Vector2 location) {
