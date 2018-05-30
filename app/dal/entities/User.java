@@ -25,8 +25,10 @@ public class User {
     private String username;
     private String password;
 
+    @OneToMany
+    private List<Character> characterTeam;
 
-
+    public User() { characterTeam = new ArrayList<Character>(); }
 
     public String getUsername() {
         return username;
@@ -54,6 +56,8 @@ public class User {
 
     //public void setCharacterTeam(List<Character> characterTeam) { this.characterTeam = characterTeam; }
 
+    private final int maxTeamSize = 10;
+
     /**
      * adds character to team if character isn't on team yet and maximum teamsize will not be exceeded
      * for now only allowed to have 1 hero, 1 general and 3 grunts.
@@ -61,16 +65,67 @@ public class User {
      * @param character
      */
 
+    public void addCharacterToTeam(Character character) {
+        if (characterTeam.size() < maxTeamSize && !characterTeam.contains(character)) {
+            HashMap<RankName, Integer> rankCount = getCharacterCount(characterTeam);
+
+            RankName rankName = character.getRank().getRankName();
+            switch (rankName) {
+                case HERO:
+                    if (rankCount.get(rankName) < 1) {
+                        characterTeam.add(character);
+                    }
+                    break;
+                case GENERAL:
+                    if (rankCount.get(rankName) < 1) {
+                        characterTeam.add(character);
+                    }
+                    break;
+                case GRUNT:
+                    if (rankCount.get(rankName) < 3) {
+                        characterTeam.add(character);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 
     /**
      * returns HashMap with amount of heroes, generals and minions in list of given characters
      * doing it once for performance's sake (not needing to go through the for loop multiple times to see the amount
      * of units)
      *
-     * @param characters
-     * @return
+     * @param characters list of characters
+     * @return hashMap with amount of characters by class
      */
 
+    private HashMap<RankName, Integer> getCharacterCount(List<Character> characters) {
+        HashMap<RankName, Integer> result = new HashMap<RankName, Integer>();
+        result.put(RankName.HERO, 0);
+        result.put(RankName.GENERAL, 0);
+        result.put(RankName.GRUNT, 0);
+
+        for (Character c : characters) {
+            RankName rankName = c.getRank().getRankName();
+            switch (rankName) {
+                case HERO:
+                    result.put(RankName.HERO, result.get(rankName)+1);
+                    break;
+                case GENERAL:
+                    result.put(RankName.GENERAL, result.get(rankName)+1);
+                    break;
+                case GRUNT:
+                    result.put(RankName.GRUNT, result.get(rankName)+1);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return result;
+    }
 
     /**
      * remove character from team

@@ -9,26 +9,31 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.inject.Injector;
 import msgs.Packet;
 import play.Logger;
 import play.libs.streams.ActorFlow;
 import play.mvc.Controller;
-import play.mvc.*;
+import play.mvc.Result;
+import play.mvc.WebSocket;
 
 import javax.inject.Inject;
+
 
 public class GameController extends Controller {
 
     private final ActorSystem actorSystem;
     private final Materializer mat;
+    private Injector injector;
     ObjectMapper mapper;
 
 
     @Inject
-    public GameController(ActorSystem actorSystem, Materializer mat) {
+    public GameController(ActorSystem actorSystem, Materializer mat, Injector injector) {
         super();
         this.actorSystem = actorSystem;
         this.mat = mat;
+        this.injector = injector;
         actorSystem.actorOf(GameManagerActor.props(), "GameManager");
 
         mapper = new ObjectMapper();
@@ -65,6 +70,6 @@ public class GameController extends Controller {
 
         public WebSocket game() {
             Logger.debug("Trying to make a new connection...");
-            return WebSocket.json(Packet.class).accept(request -> ActorFlow.actorRef(WebSocketActor::props, actorSystem, mat));
+            return WebSocket.json(Packet.class).accept(request -> ActorFlow.actorRef(out -> WebSocketActor.props(out, injector), actorSystem, mat));
     }
 }
