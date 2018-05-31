@@ -25,6 +25,7 @@
   </appender>
 
   <logger name="controllers.HomeController" level="DEBUG" />
+  <logger name="controllers.GameController" level="DEBUG" />
 
   <root level="DEBUG">
     <appender-ref ref="ASYNCFILE" />
