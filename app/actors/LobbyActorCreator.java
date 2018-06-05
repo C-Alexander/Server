@@ -1,6 +1,5 @@
 package actors;
 
-
 import akka.japi.Creator;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
