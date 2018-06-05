@@ -4,7 +4,6 @@ import akka.actor.*;
 import models.Player;
 import msgs.*;
 import play.Logger;
-
 import java.util.HashMap;
 
 public class GameActor extends AbstractActor {
@@ -14,7 +13,6 @@ public class GameActor extends AbstractActor {
     public static Props props() {
         return Props.create(GameActor.class);
     }
-
 
     public GameActor() {
         players = new HashMap<>();
@@ -43,12 +41,10 @@ public class GameActor extends AbstractActor {
 
     private void handleJoiningPlayer(PlayerJoinedMessage message) {
         Logger.info("Broadcasting new player: " + message.getPlayer().getId());
-
         gameId = message.getGame();
         Player newPlayer = message.getPlayer();
         newPlayer.setGame(getSelf());
         players.putIfAbsent(newPlayer.getId(), newPlayer);
-
         PlayerAddedToGameMessage successMessage = new PlayerAddedToGameMessage();
         successMessage.setGame(getSelf());
         getSender().tell(successMessage, getSelf());
@@ -58,5 +54,4 @@ public class GameActor extends AbstractActor {
             player.getOut().tell("Welcome, " + newPlayer.getId() + " to Game " + getSelf().path(), getSelf());
         }
     }
-
 }
