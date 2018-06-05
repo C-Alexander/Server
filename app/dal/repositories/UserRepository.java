@@ -32,4 +32,8 @@ public class UserRepository {
     public Boolean login(User user) {
         return context.login(user);
     }
+
+    public User getAndAuthenticate(String username, String password) {
+        return context.getAndAuthenticate(username, password);
+    }
 }

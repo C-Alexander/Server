@@ -16,12 +16,15 @@ libraryDependencies += "org.hibernate" % "hibernate-entitymanager" % "5.1.0.Fina
 libraryDependencies += "com.microsoft.sqlserver" % "mssql-jdbc" % "6.1.0.jre7"
 libraryDependencies += "com.h2database" % "h2" % "1.4.197"
 
+libraryDependencies += "works.maatwerk" % "gameLogic" % "1.0"
+
 libraryDependencies += "org.webjars" %% "webjars-play" % "2.6.2"
 libraryDependencies += "org.webjars" % "flot" % "0.8.3"
 libraryDependencies += "org.webjars" % "bootstrap" % "3.3.6"
 
 libraryDependencies += guice
 libraryDependencies += ws
+libraryDependencies += ehcache
 
 libraryDependencies += "org.assertj" % "assertj-core" % "3.8.0" % Test
 libraryDependencies += "org.awaitility" % "awaitility" % "3.0.0" % Test
