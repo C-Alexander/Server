@@ -2,17 +2,16 @@ package dal.contexts;
 
 import dal.entities.User;
 import play.db.jpa.JPAApi;
-
 import javax.persistence.EntityManager;
 import java.util.List;
 
 public class JPAUserContext implements UserContext {
-
     private final JPAApi jpaApi;
 
     @javax.inject.Inject
     public JPAUserContext(JPAApi jpaApi) {
-        this.jpaApi = jpaApi; }
+        this.jpaApi = jpaApi;
+    }
 
     private EntityManager getEntityManager() {
         return this.jpaApi.em();
