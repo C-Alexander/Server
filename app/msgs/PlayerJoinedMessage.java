@@ -4,9 +4,9 @@ import models.Player;
 
 public class PlayerJoinedMessage extends Message {
 
-    Player player;
-    String game;
-    String sessionId;
+    private Player player;
+    private String game;
+    private String sessionId;
 
     public Player getPlayer() {
         return player;

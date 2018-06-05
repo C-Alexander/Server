@@ -2,8 +2,11 @@ package controllers;
 
 
 import actors.GameManagerActor;
+import actors.LobbyActorCreator;
 import actors.WebSocketActor;
+import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import akka.actor.Props;
 import akka.stream.Materializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,7 +28,7 @@ public class GameController extends Controller {
     private final ActorSystem actorSystem;
     private final Materializer mat;
     private Injector injector;
-    ObjectMapper mapper;
+    private ObjectMapper mapper;
 
 
     @Inject
@@ -35,6 +38,9 @@ public class GameController extends Controller {
         this.mat = mat;
         this.injector = injector;
         actorSystem.actorOf(GameManagerActor.props(), "GameManager");
+
+        LobbyActorCreator creator = injector.getInstance(LobbyActorCreator.class);
+        ActorRef lobbyActor = actorSystem.actorOf(Props.create(creator), "LobbyManager");
 
         mapper = new ObjectMapper();
     }

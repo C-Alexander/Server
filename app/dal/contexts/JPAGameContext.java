@@ -1,7 +1,6 @@
 package dal.contexts;
 
 import dal.entities.Game;
-import dal.entities.Session;
 import play.db.jpa.JPAApi;
 
 import javax.persistence.EntityManager;
@@ -16,7 +15,7 @@ public class JPAGameContext implements GameContext {
         this.jpaApi = jpaApi;
     }
 
-    protected EntityManager getEntityManager() {
+    private EntityManager getEntityManager() {
         return this.jpaApi.em();
     }
 
@@ -28,7 +27,7 @@ public class JPAGameContext implements GameContext {
     }
 
     @Override
-    public Game getGame(int gameId) {
+    public Game getGame(String gameId) {
         return getEntityManager()
                 .createNamedQuery("Game.findOne", Game.class)
                 .setParameter("id", gameId)
@@ -41,15 +40,17 @@ public class JPAGameContext implements GameContext {
                 .createNamedQuery("Game.findFirstOpen", Game.class)
                 .setMaxResults(1)
                 .getResultList();
-        if (results.isEmpty()) return null;
+        if (results.isEmpty()) return new Game();
         else return results.get(0);
     }
 
     @Override
-    public void saveGame(Game game) { getEntityManager().persist(game); }
+    public void saveGame(Game game) {
+        getEntityManager().persist(game);
+    }
 
     @Override
-    public void saveSession(Session session) {
-        getEntityManager().persist(session);
+    public void removeGame(Game game) {
+        getEntityManager().remove(game);
     }
 }

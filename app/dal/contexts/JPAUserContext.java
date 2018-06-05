@@ -11,7 +11,8 @@ public class JPAUserContext implements UserContext {
     private final JPAApi jpaApi;
 
     @javax.inject.Inject
-    public JPAUserContext(JPAApi jpaApi) { this.jpaApi = jpaApi; }
+    public JPAUserContext(JPAApi jpaApi) {
+        this.jpaApi = jpaApi; }
 
     private EntityManager getEntityManager() {
         return this.jpaApi.em();

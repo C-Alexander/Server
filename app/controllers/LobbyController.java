@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import dal.entities.Game;
 import dal.entities.Session;
 import dal.repositories.GameRepository;
+import dal.repositories.SessionRepository;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -17,11 +18,13 @@ import javax.inject.Singleton;
 public class LobbyController extends Controller {
 
     private final GameRepository gameRepository;
+    private final SessionRepository sessionRepository;
     private ObjectMapper mapper;
 
     @Inject
-    public LobbyController(GameRepository gameRepository) {
+    public LobbyController(GameRepository gameRepository, SessionRepository sessionRepository) {
         this.gameRepository = gameRepository;
+        this.sessionRepository = sessionRepository;
         mapper = new ObjectMapper();
     }
 
@@ -29,23 +32,21 @@ public class LobbyController extends Controller {
     public Result addToQueue() {
         JsonNode body = request().body().asJson();
 
-        String uuid = body.get("sessionid").asText();
-
-        Game game = gameRepository.getOpenGame();
-        if (game == null) { game = new Game(); }
-        gameRepository.saveGame(game);
-
-        // Voorkom dubbele sessions
-        Session player = new Session();
-        player.setSessionId(uuid);
-        gameRepository.saveSession(player);
-        game.addSession(player);
+        String uuid = body.get("sessionId").asText();
 
         ObjectNode json = mapper.createObjectNode();
 
-        json.put("sessionid", player.getSessionId());
-        json.put("gameid", game.getId());
-        json.put("size", game.getSessionList().size());
+        // Voorkom dubbele sessions
+        Session gameSession = sessionRepository.findOne(uuid);
+        if (gameSession != null) {
+            Game game = gameRepository.getOpenGame();
+            gameRepository.saveGame(game);
+            game.addSession(gameSession);
+
+            json.put("sessionId", gameSession.getId());
+            json.put("gameId", game.getId());
+            json.put("size", game.getSessions().size());
+        }
 
         return ok(json.toString());
 
