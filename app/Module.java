@@ -27,17 +27,13 @@ public class Module extends AbstractModule {
     @Override
     public void configure() {
         bind(DatabaseExecutionContext.class);
-
         bind(VerificationActor.class);
         bind(VerificationActorCreator.class);
-
         bind(UserRepository.class);
         bind(SessionRepository.class);
         bind(SessionContext.class).to(JPASessionContext.class);
-
         bind(UserContext.class).to(JPAUserContext.class);
         bind(GameRepository.class);
         bind(GameContext.class).to(JPAGameContext.class);
     }
-
 }
