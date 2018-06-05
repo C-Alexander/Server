@@ -1,23 +1,18 @@
 package actors;
 
 import akka.actor.*;
-import akka.parboiled2.support.Join;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import models.Player;
 import msgs.*;
 import play.Logger;
-
-import java.io.IOException;
 import java.util.HashMap;
 
 public class GameActor extends AbstractActor {
     private HashMap<Integer, Player> players;
+    private String gameId;
 
     public static Props props() {
         return Props.create(GameActor.class);
     }
-
 
     public GameActor() {
         players = new HashMap<>();
@@ -28,8 +23,14 @@ public class GameActor extends AbstractActor {
         return receiveBuilder()
                 .match(PlayerJoinedMessage.class, this::handleJoiningPlayer)
                 .match(PlayerPacket.class, this::handlePlayerAction)
+                .match(PoisonPill.class, this::handleGameEnd)
                 .matchAny(message -> Logger.error("Unknown message: " + message))
                 .build();
+    }
+
+    private void handleGameEnd(PoisonPill poisonpill) {
+        ActorSelection selection = getContext().actorSelection("../../../LobbyManager");
+        selection.tell(new EndGameMessage(gameId), getSelf());
     }
 
     private void handlePlayerAction(PlayerPacket playerPacket) {
@@ -40,11 +41,10 @@ public class GameActor extends AbstractActor {
 
     private void handleJoiningPlayer(PlayerJoinedMessage message) {
         Logger.info("Broadcasting new player: " + message.getPlayer().getId());
-
+        gameId = message.getGame();
         Player newPlayer = message.getPlayer();
         newPlayer.setGame(getSelf());
         players.putIfAbsent(newPlayer.getId(), newPlayer);
-
         PlayerAddedToGameMessage successMessage = new PlayerAddedToGameMessage();
         successMessage.setGame(getSelf());
         getSender().tell(successMessage, getSelf());
@@ -54,5 +54,4 @@ public class GameActor extends AbstractActor {
             player.getOut().tell("Welcome, " + newPlayer.getId() + " to Game " + getSelf().path(), getSelf());
         }
     }
-
 }
