@@ -2,12 +2,10 @@ package dal.contexts;
 
 import dal.entities.Game;
 import play.db.jpa.JPAApi;
-
 import javax.persistence.EntityManager;
 import java.util.List;
 
 public class JPAGameContext implements GameContext {
-
     private final JPAApi jpaApi;
 
     @javax.inject.Inject
@@ -40,8 +38,10 @@ public class JPAGameContext implements GameContext {
                 .createNamedQuery("Game.findFirstOpen", Game.class)
                 .setMaxResults(1)
                 .getResultList();
-        if (results.isEmpty()) return new Game();
-        else return results.get(0);
+        if (results.isEmpty())
+            return new Game();
+        else
+            return results.get(0);
     }
 
     @Override
