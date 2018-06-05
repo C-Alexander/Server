@@ -3,7 +3,6 @@ package msgs;
 import models.Player;
 
 public class PlayerJoinedMessage extends Message {
-
     private Player player;
     private String game;
     private String sessionId;
