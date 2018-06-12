@@ -12,11 +12,11 @@ import java.util.HashMap;
 public class GameActor extends AbstractActor {
     GameServer gameServer =  new GameServer(getSelf());
     private HashMap<Integer, Player> players;
+    private String gameId;
 
     public static Props props() {
         return Props.create(GameActor.class);
     }
-
 
     public GameActor() {
         players = new HashMap<>();
@@ -29,12 +29,18 @@ public class GameActor extends AbstractActor {
                 .match(PlayerJoinedMessage.class, this::handleJoiningPlayer)
                 .match(PlayerPacket.class, this::handlePlayerAction)
                 .match(Packet.class, this::handlePacketToPlayers)
+                .match(PoisonPill.class, this::handleGameEnd)
                 .matchAny(message -> Logger.error("Unknown message: " + message))
                 .build();
     }
 
     private void handlePacketToPlayers(Packet packet) {
         broadcastToPlayers(packet);
+    }
+
+    private void handleGameEnd(PoisonPill poisonpill) {
+        ActorSelection selection = getContext().actorSelection("../../../LobbyManager");
+        selection.tell(new EndGameMessage(gameId), getSelf());
     }
 
     private void handlePlayerAction(PlayerPacket playerPacket) {
@@ -55,11 +61,10 @@ public class GameActor extends AbstractActor {
 
     private void handleJoiningPlayer(PlayerJoinedMessage message) {
         Logger.info("Broadcasting new player: " + message.getPlayer().getId());
-
+        gameId = message.getGame();
         Player newPlayer = message.getPlayer();
         newPlayer.setGame(getSelf());
         players.putIfAbsent(newPlayer.getId(), newPlayer);
-
         PlayerAddedToGameMessage successMessage = new PlayerAddedToGameMessage();
         successMessage.setGame(getSelf());
         getSender().tell(successMessage, getSelf());
