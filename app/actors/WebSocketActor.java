@@ -76,6 +76,7 @@ public class WebSocketActor extends AbstractActor {
 //        selection.tell(message, getSelf());
         verifyPlayer(message);
 
+
     }
 
     private void verifyPlayer(PlayerJoinedMessage playerToAdd) {

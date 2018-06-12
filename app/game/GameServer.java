@@ -157,4 +157,8 @@ public class GameServer {
         this.characterLayer[(int) location.getX()][(int) location.getY()] = character;
     }
 
+
+    public void endTurn(PlayerPacket playerPacket) {
+
+    }
 }
