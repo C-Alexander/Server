@@ -177,7 +177,7 @@ public class GameServer {
         this.characterLayer[(int) location.getX()][(int) location.getY()] = character;
     }
 
-    public void endTurn(){
+    public void endTurn(PlayerPacket playerPacket){
         if(this.turnSwitch == Team.TEAMA){
             this.turnSwitch = Team.TEAMB;
         }
