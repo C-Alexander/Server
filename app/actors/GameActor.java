@@ -10,7 +10,7 @@ import play.libs.Json;
 import java.util.HashMap;
 
 public class GameActor extends AbstractActor {
-    GameServer gameServer =  new GameServer(getSelf());
+    GameServer gameServer = new GameServer(getSelf());
     private HashMap<Integer, Player> players;
     private String gameId;
 
@@ -20,7 +20,7 @@ public class GameActor extends AbstractActor {
 
     public GameActor() {
         players = new HashMap<>();
-        }
+    }
 
     @Override
     public Receive createReceive() {
@@ -46,7 +46,7 @@ public class GameActor extends AbstractActor {
     private void handlePlayerAction(PlayerPacket playerPacket) {
 
         switch (playerPacket.messageType) {
-            case MOVE :
+            case MOVE:
                 this.gameServer.moveCharacter(playerPacket);
                 break;
             case ATTACK:
@@ -55,8 +55,8 @@ public class GameActor extends AbstractActor {
             case ENDTURN:
                 this.gameServer.endTurn(playerPacket);
                 break;
-
-            default: Logger.info("Got playerpacket");
+            default:
+                Logger.info("Got playerpacket");
         }
     }
 
@@ -73,14 +73,19 @@ public class GameActor extends AbstractActor {
 
         for (Player player : players.values()) {
             player.getOut().tell("Welcome, " + newPlayer.getId() + " to Game " + getSelf().path(), getSelf());
-            if(player.getId() == newPlayer.getId()){
-               this.gameServer.sendClientInfo(player.getOut());
+            if (player.getId() == newPlayer.getId()) {
+                this.gameServer.sendClientInfo(player.getOut());
             }
-
+            Packet packet = new Packet();
+            packet.messageType = MessageType.ENDTURN;
+            EndTurnMessage endTurnMessage = new EndTurnMessage();
+            endTurnMessage.setEndTurn(true);
+            packet.data = endTurnMessage;
+            player.getOut().tell(packet, ActorRef.noSender());
         }
     }
 
-    public void broadcastToPlayers(Packet packet){
+    public void broadcastToPlayers(Packet packet) {
         Logger.debug("Broadcasting new player: " + "Sending PackageS");
         for (Player player : players.values())
             player.getOut().tell(Json.toJson(packet).toString(), getSelf());
