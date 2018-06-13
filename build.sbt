@@ -11,6 +11,7 @@ PlayKeys.externalizeResources := false
 
 lazy val root = (project in file(".")).enablePlugins(PlayJava, LauncherJarPlugin)
 
+libraryDependencies += "works.maatwerk" % "gameLogic" % "1.6"
 libraryDependencies += javaJpa
 libraryDependencies += "org.hibernate" % "hibernate-entitymanager" % "5.1.0.Final"
 libraryDependencies += "com.microsoft.sqlserver" % "mssql-jdbc" % "6.1.0.jre7"

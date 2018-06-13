@@ -1,5 +1,6 @@
 package actors;
 
+import akka.actor.*;
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
@@ -42,8 +43,8 @@ public class WebSocketActor extends AbstractActor {
     }
 
     private void handlePacket(Packet packet) {
-        Logger.debug("Handling packet of type:" + packet.type);
-        switch(packet.type) {
+        Logger.debug("Handling packet " + packet.messageType);
+        switch(packet.messageType) {
             case JOIN_GAME:
                 handleJoinGame(packet);
                 break;
@@ -57,6 +58,8 @@ public class WebSocketActor extends AbstractActor {
         Logger.debug("New player trying to join");
 
         JoinGameMessage joinGameMessage = (JoinGameMessage)packet.data;
+
+        System.out.println(joinGameMessage.getUserId());
         Player player = new Player();
         player.setId(joinGameMessage.getUserId());
         player.setOut(out);
@@ -72,6 +75,7 @@ public class WebSocketActor extends AbstractActor {
 //        ActorSelection selection = getContext().actorSelection("../../GameManager");
 //        selection.tell(message, getSelf());
         verifyPlayer(message);
+
 
     }
 

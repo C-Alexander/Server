@@ -1,11 +1,11 @@
 package msgs;
 
 public class Packet {
-    public MessageType type;
+    public MessageType messageType;
     public Message data;
 
-    public Packet(MessageType type, Message data) {
-        this.type = type;
+    public Packet(MessageType messageType, Message data) {
+        this.messageType = messageType;
         this.data = data;
     }
 
