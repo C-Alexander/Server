@@ -42,8 +42,8 @@ public class GameServer {
        //General toevoegen
         Unit general = new Unit(new Race("Human", new Stats(9,6,4,5,5)), new Rank(RankName.GENERAL), WeaponClass.SWORD);
         general.setId(3);
-        characterLayer[16][4] = general;
-        general.setX(16);
+        characterLayer[17][4] = general;
+        general.setX(17);
         general.setY(4);
         general.setTeam(Team.TEAMA);
         hero1.addMinion(general);
@@ -51,8 +51,8 @@ public class GameServer {
         //General toevoegen
         Unit general3 = new Unit(new Race("Human", new Stats(9,6,4,5,5)), new Rank(RankName.GENERAL), WeaponClass.BOW);
         general3.setId(3);
-        characterLayer[16][4] = general3;
-        general3.setX(16);
+        characterLayer[13][4] = general3;
+        general3.setX(13);
         general3.setY(4);
         general3.setTeam(Team.TEAMA);
         hero1.addMinion(general3);
@@ -69,18 +69,18 @@ public class GameServer {
         //General toevoegen
         Unit general2 = new Unit(new Race("Human", new Stats(9,6,4,5,5)), new Rank(RankName.GENERAL), WeaponClass.SWORD);
         general2.setId(3);
-        characterLayer[16][4] = general2;
-        general2.setX(16);
-        general2.setY(4);
+        characterLayer[17][3] = general2;
+        general2.setX(17);
+        general2.setY(3);
         general2.setTeam(Team.TEAMB);
         hero2.addMinion(general2);
 
         //General toevoegen
         Unit general4 = new Unit(new Race("Human", new Stats(9,6,4,5,5)), new Rank(RankName.GENERAL), WeaponClass.BOW);
         general4.setId(3);
-        characterLayer[16][4] = general4;
-        general4.setX(16);
-        general4.setY(4);
+        characterLayer[13][3] = general4;
+        general4.setX(13);
+        general4.setY(3);
         general4.setTeam(Team.TEAMB);
         hero2.addMinion(general4);
     }
