@@ -11,6 +11,7 @@ import play.libs.Json;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class GameServer {
@@ -28,10 +29,10 @@ public class GameServer {
 
     public void startGame(){
         characterLayer = new Unit[31][31];
-
+        Race human = new Race("Human", new Stats());
 
         //Eerste hero toevoegen
-       Unit hero1 = new Unit(new Race("Human", new Stats(10,7,5,5,5)), new Rank(RankName.HERO), WeaponClass.SPEAR);
+       Unit hero1 = new Unit(human, new Rank(RankName.HERO), WeaponClass.SPEAR);
        hero1.setId(1);
        characterLayer[15][4] = hero1;
        hero1.setX(15);
@@ -40,47 +41,51 @@ public class GameServer {
        characterMap.add(hero1);
 
        //General toevoegen
-        Unit general = new Unit(new Race("Human", new Stats(9,6,4,5,5)), new Rank(RankName.GENERAL), WeaponClass.SWORD);
+        Unit general = new Unit(human, new Rank(RankName.GENERAL), WeaponClass.SWORD);
         general.setId(3);
         characterLayer[17][4] = general;
         general.setX(17);
         general.setY(4);
         general.setTeam(Team.TEAMA);
+        characterMap.add(general);
         hero1.addMinion(general);
 
         //General toevoegen
-        Unit general3 = new Unit(new Race("Human", new Stats(9,6,4,5,5)), new Rank(RankName.GENERAL), WeaponClass.BOW);
+        Unit general3 = new Unit(human, new Rank(RankName.GENERAL), WeaponClass.BOW);
         general3.setId(3);
         characterLayer[13][4] = general3;
         general3.setX(13);
         general3.setY(4);
         general3.setTeam(Team.TEAMA);
+        characterMap.add(general3);
         hero1.addMinion(general3);
+        hero1.matchStart();
+        List<Unit> grunts = general.getMinions();
 
        //Tweede hero toevoegen
-       Unit hero2 = new Unit(new Race("Human", new Stats(10,7,5,5,5)), new Rank(RankName.HERO), WeaponClass.SWORD);
+       Unit hero2 = new Unit(human, new Rank(RankName.HERO), WeaponClass.SWORD);
        hero2.setId(2);
-       characterLayer[15][3] = hero2;
+       characterLayer[15][27] = hero2;
        hero2.setX(15);
-       hero2.setY(3);
+       hero2.setY(27);
        hero2.setTeam(Team.TEAMB);
        characterMap.add(hero2);
 
         //General toevoegen
-        Unit general2 = new Unit(new Race("Human", new Stats(9,6,4,5,5)), new Rank(RankName.GENERAL), WeaponClass.SWORD);
+        Unit general2 = new Unit(human, new Rank(RankName.GENERAL), WeaponClass.SWORD);
         general2.setId(3);
-        characterLayer[17][3] = general2;
+        characterLayer[17][27] = general2;
         general2.setX(17);
-        general2.setY(3);
+        general2.setY(27);
         general2.setTeam(Team.TEAMB);
         hero2.addMinion(general2);
 
         //General toevoegen
-        Unit general4 = new Unit(new Race("Human", new Stats(9,6,4,5,5)), new Rank(RankName.GENERAL), WeaponClass.BOW);
+        Unit general4 = new Unit(human, new Rank(RankName.GENERAL), WeaponClass.BOW);
         general4.setId(3);
-        characterLayer[13][3] = general4;
+        characterLayer[13][27] = general4;
         general4.setX(13);
-        general4.setY(3);
+        general4.setY(27);
         general4.setTeam(Team.TEAMB);
         hero2.addMinion(general4);
     }
