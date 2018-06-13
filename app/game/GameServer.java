@@ -184,6 +184,12 @@ public class GameServer {
         else if(this.turnSwitch == Team.TEAMB){
             this.turnSwitch = Team.TEAMA;
         }
+        Packet packet = new Packet();
+        packet.messageType = MessageType.ENDTURN;
+        EndTurnMessage endTurnMessage = new EndTurnMessage();
+        endTurnMessage.setEndTurn(true);
+        packet.data = endTurnMessage;
+        this.gameActor.tell(packet,ActorRef.noSender());
     }
 
 
