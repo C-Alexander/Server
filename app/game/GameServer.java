@@ -49,6 +49,15 @@ public class GameServer {
         general.setTeam(Team.TEAMA);
         characterMap.add(general);
         hero1.addMinion(general);
+        List<Unit> grunts = general.getMinions();
+        Unit grunt1 = grunts.get(0);
+        grunt1.setX(16);
+        grunt1.setY(5);
+        characterMap.add(grunt1);
+        Unit grunt2 = grunts.get(1);
+        grunt2.setX(18);
+        grunt2.setY(5);
+        characterMap.add(grunt2);
 
         //General toevoegen
         Unit general3 = new Unit(human, new Rank(RankName.GENERAL), WeaponClass.BOW);
@@ -60,7 +69,15 @@ public class GameServer {
         characterMap.add(general3);
         hero1.addMinion(general3);
         hero1.matchStart();
-        List<Unit> grunts = general.getMinions();
+        List<Unit> grunts2 = general3.getMinions();
+        Unit grunt3 = grunts2.get(0);
+        grunt3.setX(12);
+        grunt3.setY(5);
+        characterMap.add(grunt3);
+        Unit grunt4 = grunts2.get(1);
+        grunt4.setX(14);
+        grunt4.setY(5);
+        characterMap.add(grunt4);
 
        //Tweede hero toevoegen
        Unit hero2 = new Unit(human, new Rank(RankName.HERO), WeaponClass.SWORD);
@@ -79,6 +96,15 @@ public class GameServer {
         general2.setY(27);
         general2.setTeam(Team.TEAMB);
         hero2.addMinion(general2);
+        List<Unit> grunts3 = general2.getMinions();
+        Unit grunt5 = grunts3.get(0);
+        grunt5.setX(16);
+        grunt5.setY(26);
+        characterMap.add(grunt5);
+        Unit grunt6 = grunts3.get(1);
+        grunt6.setX(18);
+        grunt6.setY(26);
+        characterMap.add(grunt6);
 
         //General toevoegen
         Unit general4 = new Unit(human, new Rank(RankName.GENERAL), WeaponClass.BOW);
@@ -88,6 +114,15 @@ public class GameServer {
         general4.setY(27);
         general4.setTeam(Team.TEAMB);
         hero2.addMinion(general4);
+        List<Unit> grunts4 = general4.getMinions();
+        Unit grunt7 = grunts4.get(0);
+        grunt7.setX(12);
+        grunt7.setY(26);
+        characterMap.add(grunt7);
+        Unit grunt8 = grunts4.get(1);
+        grunt8.setX(14);
+        grunt8.setY(26);
+        characterMap.add(grunt8);
     }
 
     public void sendClientInfo(ActorRef actorRef){
