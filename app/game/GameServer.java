@@ -18,6 +18,7 @@ public class GameServer {
     private ActorRef gameActor;
     private Unit[][] characterLayer;
     private final ArrayList<Unit> characterMap =  new ArrayList<>();
+    private Team turnSwitch = Team.TEAMA;
 
     public GameServer(ActorRef gameActor) {
         this.gameActor = gameActor;
@@ -27,13 +28,33 @@ public class GameServer {
 
     public void startGame(){
         characterLayer = new Unit[31][31];
+
+
+        //Eerste hero toevoegen
        Unit hero1 = new Unit(new Race("Test", new Stats()), new Rank(RankName.HERO), WeaponClass.SWORD);
-      hero1.setId(1);
+       hero1.setId(1);
        characterLayer[15][4] = hero1;
+       hero1.setX(15);
+       hero1.setY(4);
        characterMap.add(hero1);
+
+       //General toevoegen
+        Unit general = new Unit(new Race("Test", new Stats()), new Rank(RankName.GENERAL), WeaponClass.SWORD);
+        general.setId(3);
+        characterLayer[16][4] = general;
+        general.setX(16);
+        general.setY(4);
+        characterMap.add(general);
+
+
+       //Tweede hero toevoegen
        Unit hero2 = new Unit(new Race("Test", new Stats()), new Rank(RankName.HERO), WeaponClass.SWORD);
        hero2.setId(2);
        characterLayer[15][3] = hero2;
+       hero2.setX(15);
+       hero2.setY(3);
+
+
        characterMap.add(hero2);
     }
 
@@ -148,17 +169,22 @@ public class GameServer {
     public void removeCharacter(Unit character) {
         Vector2 location = getCharacterLocation(character.getId());
         this.characterLayer[(int) location.getX()][(int) location.getY()] = null;
-      //  this.characterMap.remove(character);
     }
 
     public void addCharacter(Unit character, Vector2 location) {
-   //     Vector2 location = getCharacterLocation(character.getId());
-    //    this.characterMap.add(character);
+        character.setX(location.x);
+        character.setY(location.y);
         this.characterLayer[(int) location.getX()][(int) location.getY()] = character;
     }
 
-
-    public void endTurn(PlayerPacket playerPacket) {
-
+    public void endTurn(){
+        if(this.turnSwitch == Team.TEAMA){
+            this.turnSwitch = Team.TEAMB;
+        }
+        else if(this.turnSwitch == Team.TEAMB){
+            this.turnSwitch = Team.TEAMA;
+        }
     }
+
+
 }

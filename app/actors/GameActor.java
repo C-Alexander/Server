@@ -55,6 +55,7 @@ public class GameActor extends AbstractActor {
             case ENDTURN:
                 this.gameServer.endTurn(playerPacket);
                 break;
+
             default: Logger.info("Got playerpacket");
         }
     }
