@@ -16,7 +16,7 @@ public class Game {
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
     private String id;
-    @OneToMany(cascade=CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(cascade=CascadeType.PERSIST)
     @JoinTable(
             joinColumns = @JoinColumn(name = "gameId", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "sessionId", referencedColumnName = "id"))
