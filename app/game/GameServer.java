@@ -40,24 +40,17 @@ public class GameServer {
        hero1.setTeam(Team.TEAMA);
        characterMap.add(hero1);
 
+
        //General toevoegen
         Unit general = new Unit(human, new Rank(RankName.GENERAL), WeaponClass.SWORD);
-        general.setId(3);
+        general.setId(2);
         characterLayer[17][4] = general;
         general.setX(17);
         general.setY(4);
         general.setTeam(Team.TEAMA);
         characterMap.add(general);
         hero1.addMinion(general);
-        List<Unit> grunts = general.getMinions();
-        Unit grunt1 = grunts.get(0);
-        grunt1.setX(16);
-        grunt1.setY(5);
-        characterMap.add(grunt1);
-        Unit grunt2 = grunts.get(1);
-        grunt2.setX(18);
-        grunt2.setY(5);
-        characterMap.add(grunt2);
+
 
         //General toevoegen
         Unit general3 = new Unit(human, new Rank(RankName.GENERAL), WeaponClass.BOW);
@@ -69,19 +62,52 @@ public class GameServer {
         characterMap.add(general3);
         hero1.addMinion(general3);
         hero1.matchStart();
+        general.matchStart();
+        general3.matchStart();
+
+        List<Unit> grunts = general.getMinions();
+        System.out.println(grunts.size());
+        Unit grunt1 = grunts.get(0);
+        grunt1.setId(7);
+        grunt1.setX(16);
+        grunt1.setY(5);
+        grunt1.setTeam(Team.TEAMA);
+        characterMap.add(grunt1);
+        Unit grunt2 = grunts.get(1);
+        grunt2.setId(8);
+        grunt2.setX(18);
+        grunt2.setY(5);
+        grunt2.setTeam(Team.TEAMA);
+        characterMap.add(grunt2);
+        Unit grunt9 = grunts.get(2);
+        grunt9.setId(15);
+        grunt9.setX(17);
+        grunt9.setY(5);
+        grunt9.setTeam(Team.TEAMA);
+        characterMap.add(grunt9);
         List<Unit> grunts2 = general3.getMinions();
+
         Unit grunt3 = grunts2.get(0);
+        grunt3.setId(9);
         grunt3.setX(12);
         grunt3.setY(5);
+        grunt3.setTeam(Team.TEAMA);
         characterMap.add(grunt3);
         Unit grunt4 = grunts2.get(1);
+        grunt4.setId(10);
         grunt4.setX(14);
         grunt4.setY(5);
+        grunt4.setTeam(Team.TEAMA);
         characterMap.add(grunt4);
-
+        Unit grunt10 = grunts2.get(2);
+        grunt10.setId(16);
+        grunt10.setX(13);
+        grunt10.setY(5);
+        grunt10.setTeam(Team.TEAMA);
+        characterMap.add(grunt10);
        //Tweede hero toevoegen
        Unit hero2 = new Unit(human, new Rank(RankName.HERO), WeaponClass.SWORD);
-       hero2.setId(2);
+       hero2.setId(4);
        characterLayer[15][27] = hero2;
        hero2.setX(15);
        hero2.setY(27);
@@ -90,44 +116,70 @@ public class GameServer {
 
         //General toevoegen
         Unit general2 = new Unit(human, new Rank(RankName.GENERAL), WeaponClass.SWORD);
-        general2.setId(3);
+        general2.setId(5);
         characterLayer[17][27] = general2;
         general2.setX(17);
         general2.setY(27);
         general2.setTeam(Team.TEAMB);
         hero2.addMinion(general2);
-        List<Unit> grunts3 = general2.getMinions();
-        Unit grunt5 = grunts3.get(0);
-        grunt5.setX(16);
-        grunt5.setY(26);
-        characterMap.add(grunt5);
-        Unit grunt6 = grunts3.get(1);
-        grunt6.setX(18);
-        grunt6.setY(26);
-        characterMap.add(grunt6);
 
         //General toevoegen
         Unit general4 = new Unit(human, new Rank(RankName.GENERAL), WeaponClass.BOW);
-        general4.setId(3);
+        general4.setId(6);
         characterLayer[13][27] = general4;
         general4.setX(13);
         general4.setY(27);
         general4.setTeam(Team.TEAMB);
         hero2.addMinion(general4);
+        hero2.matchStart();
+        general4.matchStart();
+        general2.matchStart();
+
+        List<Unit> grunts3 = general2.getMinions();
+        Unit grunt5 = grunts3.get(0);
+        grunt5.setId(11);
+        grunt5.setX(16);
+        grunt5.setY(26);
+        grunt5.setTeam(Team.TEAMB);
+        characterMap.add(grunt5);
+        Unit grunt6 = grunts3.get(1);
+        grunt6.setId(12);
+        grunt6.setX(18);
+        grunt6.setY(26);
+        grunt6.setTeam(Team.TEAMB);
+        characterMap.add(grunt6);
+        Unit grunt11 = grunts3.get(2);
+        grunt11.setId(17);
+        grunt11.setX(17);
+        grunt11.setY(26);
+        grunt11.setTeam(Team.TEAMB);
+        characterMap.add(grunt11);
+
         List<Unit> grunts4 = general4.getMinions();
         Unit grunt7 = grunts4.get(0);
+        grunt7.setId(13);
         grunt7.setX(12);
         grunt7.setY(26);
+        grunt7.setTeam(Team.TEAMB);
         characterMap.add(grunt7);
         Unit grunt8 = grunts4.get(1);
+        grunt8.setId(14);
         grunt8.setX(14);
         grunt8.setY(26);
+        grunt8.setTeam(Team.TEAMB);
         characterMap.add(grunt8);
+        Unit grunt12 = grunts4.get(2);
+        grunt12.setId(18);
+        grunt12.setX(13);
+        grunt12.setY(26);
+        grunt12.setTeam(Team.TEAMB);
+        characterMap.add(grunt12);
     }
 
     public void sendClientInfo(ActorRef actorRef){
 
         for(Unit ch: characterMap){
+            if(ch.getRank().getRankName() == RankName.HERO){
             Logger.debug("Broadcasting CLient Info ");
             Vector2 location = getCharacterLocation(ch.getId());
             Packet packet2 = new Packet();
@@ -138,6 +190,7 @@ public class GameServer {
             ((AddCharacterUpdate) packet2.data).setY(location.y);
            // gameActor.tell(packet2,ActorRef.noSender());
             actorRef.tell(Json.toJson(packet2).toString(), ActorRef.noSender());
+            }
         }
     }
     private int getId(){
