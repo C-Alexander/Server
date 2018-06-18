@@ -30,7 +30,6 @@ public class GameServer {
     public void startGame(){
         characterLayer = new Unit[31][31];
         Race human = new Race("Human", new Stats());
-
         //Eerste hero toevoegen
        Unit hero1 = new Unit(human, new Rank(RankName.HERO), WeaponClass.SPEAR);
        hero1.setId(1);
@@ -53,7 +52,7 @@ public class GameServer {
 
 
         //General toevoegen
-        Unit general3 = new Unit(human, new Rank(RankName.GENERAL), WeaponClass.BOW);
+        Unit general3 = new Unit(human, new Rank(RankName.GENERAL), WeaponClass.AXE);
         general3.setId(3);
         characterLayer[13][4] = general3;
         general3.setX(13);
@@ -111,7 +110,7 @@ public class GameServer {
         grunt10.setTeam(Team.TEAMA);
         characterMap.add(grunt10);
        //Tweede hero toevoegen
-       Unit hero2 = new Unit(human, new Rank(RankName.HERO), WeaponClass.SWORD);
+       Unit hero2 = new Unit(human, new Rank(RankName.HERO), WeaponClass.SPEAR);
        hero2.setId(4);
        characterLayer[15][27] = hero2;
        hero2.setX(15);
@@ -126,15 +125,17 @@ public class GameServer {
         general2.setX(17);
         general2.setY(27);
         general2.setTeam(Team.TEAMB);
+        characterMap.add(general2);
         hero2.addMinion(general2);
 
         //General toevoegen
-        Unit general4 = new Unit(human, new Rank(RankName.GENERAL), WeaponClass.BOW);
+        Unit general4 = new Unit(human, new Rank(RankName.GENERAL), WeaponClass.AXE);
         general4.setId(6);
         characterLayer[13][27] = general4;
         general4.setX(13);
         general4.setY(27);
         general4.setTeam(Team.TEAMB);
+        characterMap.add(general4);
         hero2.addMinion(general4);
         hero2.matchStart();
         general4.matchStart();
