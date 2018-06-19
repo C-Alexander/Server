@@ -4,11 +4,10 @@ package game;
 import akka.actor.ActorRef;
 import msgs.*;
 import play.Logger;
-import works.maatwerk.gamelogic.models.Unit;
-import works.maatwerk.gamelogic.models.*;
-import works.maatwerk.gamelogic.enums.*;
 import play.libs.Json;
-
+import works.maatwerk.gamelogic.enums.RankName;
+import works.maatwerk.gamelogic.enums.Team;
+import works.maatwerk.gamelogic.models.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +27,7 @@ public class GameServer {
 
 
     public void startGame(){
-        characterLayer = new Unit[31][31];
+        characterLayer = new Unit[240][120];
         Race human = new Race("Human", new Stats());
         //Eerste hero toevoegen
        Unit hero1 = new Unit(human, new Rank(RankName.HERO), WeaponClass.SPEAR);
@@ -186,6 +185,18 @@ public class GameServer {
         grunt12.setY(26);
         grunt12.setTeam(Team.TEAMB);
         characterMap.add(grunt12);
+
+        for (int i = 0; i < characterLayer.length; i++) {
+            for (int i1 = 0; i1 < characterLayer[i].length; i1++) {
+                characterLayer[i][i1] = null;
+            }
+        }
+
+        for (Unit unit : characterMap) {
+            unit.setX(unit.getX() + 105);
+            unit.setY(unit.getY() + 45);
+            characterLayer[unit.getX()][unit.getY()] = unit;
+        }
     }
 
     public void sendClientInfo(ActorRef actorRef){
