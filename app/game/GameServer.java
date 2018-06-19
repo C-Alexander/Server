@@ -6,10 +6,8 @@ import msgs.*;
 import play.Logger;
 import play.libs.Json;
 import works.maatwerk.gamelogic.enums.RankName;
-import works.maatwerk.gamelogic.models.Race;
-import works.maatwerk.gamelogic.models.Rank;
-import works.maatwerk.gamelogic.models.Stats;
-import works.maatwerk.gamelogic.models.WeaponClass;
+import works.maatwerk.gamelogic.enums.Team;
+import works.maatwerk.gamelogic.models.*;
 
 import java.util.ArrayList;
 import java.util.List;
