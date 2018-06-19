@@ -17,7 +17,7 @@ libraryDependencies += "org.hibernate" % "hibernate-entitymanager" % "5.1.0.Fina
 libraryDependencies += "com.microsoft.sqlserver" % "mssql-jdbc" % "6.1.0.jre7"
 libraryDependencies += "com.h2database" % "h2" % "1.4.197"
 
-libraryDependencies += "works.maatwerk" % "gameLogic" % "1.0"
+libraryDependencies += "works.maatwerk" % "gameLogic" % "1.6"
 
 libraryDependencies += "org.webjars" %% "webjars-play" % "2.6.2"
 libraryDependencies += "org.webjars" % "flot" % "0.8.3"

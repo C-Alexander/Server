@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class Session {
     @Id
     @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
     @ManyToOne(targetEntity = User.class)
     private User player;
