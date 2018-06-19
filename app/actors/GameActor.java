@@ -10,17 +10,17 @@ import play.libs.Json;
 import java.util.HashMap;
 
 public class GameActor extends AbstractActor {
-    GameServer gameServer =  new GameServer(getSelf());
+    GameServer gameServer = new GameServer(getSelf());
     private HashMap<Integer, Player> players;
+    private String gameId;
 
     public static Props props() {
         return Props.create(GameActor.class);
     }
 
-
     public GameActor() {
         players = new HashMap<>();
-        }
+    }
 
     @Override
     public Receive createReceive() {
@@ -29,6 +29,7 @@ public class GameActor extends AbstractActor {
                 .match(PlayerJoinedMessage.class, this::handleJoiningPlayer)
                 .match(PlayerPacket.class, this::handlePlayerAction)
                 .match(Packet.class, this::handlePacketToPlayers)
+                .match(PoisonPill.class, this::handleGameEnd)
                 .matchAny(message -> Logger.error("Unknown message: " + message))
                 .build();
     }
@@ -37,26 +38,34 @@ public class GameActor extends AbstractActor {
         broadcastToPlayers(packet);
     }
 
+    private void handleGameEnd(PoisonPill poisonpill) {
+        ActorSelection selection = getContext().actorSelection("../../../LobbyManager");
+        selection.tell(new EndGameMessage(gameId), getSelf());
+    }
+
     private void handlePlayerAction(PlayerPacket playerPacket) {
 
         switch (playerPacket.messageType) {
-            case MOVE :
+            case MOVE:
                 this.gameServer.moveCharacter(playerPacket);
                 break;
             case ATTACK:
                 this.gameServer.attackCharacter(playerPacket);
                 break;
-            default: Logger.info("Got playerpacket");
+            case ENDTURN:
+                this.gameServer.endTurn(playerPacket);
+                break;
+            default:
+                Logger.info("Got playerpacket");
         }
     }
 
     private void handleJoiningPlayer(PlayerJoinedMessage message) {
         Logger.info("Broadcasting new player: " + message.getPlayer().getId());
-
+        gameId = message.getGame();
         Player newPlayer = message.getPlayer();
         newPlayer.setGame(getSelf());
         players.putIfAbsent(newPlayer.getId(), newPlayer);
-
         PlayerAddedToGameMessage successMessage = new PlayerAddedToGameMessage();
         successMessage.setGame(getSelf());
         getSender().tell(successMessage, getSelf());
@@ -64,14 +73,19 @@ public class GameActor extends AbstractActor {
 
         for (Player player : players.values()) {
             player.getOut().tell("Welcome, " + newPlayer.getId() + " to Game " + getSelf().path(), getSelf());
-            if(player.getId() == newPlayer.getId()){
-               this.gameServer.sendClientInfo(player.getOut());
+            if (player.getId() == newPlayer.getId()) {
+                this.gameServer.sendClientInfo(player.getOut());
             }
-
+            Packet packet = new Packet();
+            packet.messageType = MessageType.ENDTURN;
+            EndTurnMessage endTurnMessage = new EndTurnMessage();
+            endTurnMessage.setEndTurn(true);
+            packet.data = endTurnMessage;
+            player.getOut().tell(packet, ActorRef.noSender());
         }
     }
 
-    public void broadcastToPlayers(Packet packet){
+    public void broadcastToPlayers(Packet packet) {
         Logger.debug("Broadcasting new player: " + "Sending PackageS");
         for (Player player : players.values())
             player.getOut().tell(Json.toJson(packet).toString(), getSelf());
